@@ -4,36 +4,33 @@ import Filter from '../components/Filter';
 import { fetchJobs } from '../services/greenhouseApi';
 
 export default function Home() {
-    const [jobs, setJobs] = useState([]); // All jobs
-    const [filteredJobs, setFilteredJobs] = useState([]); // Jobs after filtering
-    const [filters, setFilters] = useState([]); // Active filters
+    const [jobs, setJobs] = useState([]);
+    const [filteredJobs, setFilteredJobs] = useState([]);
+    const [filters, setFilters] = useState([]);
 
-    // Fetch jobs on component mount
     useEffect(() => {
         fetchJobs(true).then(data => {
             setJobs(data);
-            setFilteredJobs(data); // Initially, all jobs are visible
+            setFilteredJobs(data);
         });
     }, []);
 
-    // Handle addition of a new filter
     const handleFilterChange = (newFilter) => {
         if (!filters.includes(newFilter)) {
             setFilters([...filters, newFilter]);
         }
     };
 
-    // Handle removal of a filter
     const handleRemoveFilter = (filterToRemove) => {
         setFilters(filters.filter(filter => filter !== filterToRemove));
     };
 
-    // Apply filters to jobs
     useEffect(() => {
         const filtered = jobs.filter(job =>
             filters.every(filter =>
                 job.title.toLowerCase().includes(filter.toLowerCase()) ||
-                job.location.name.toLowerCase().includes(filter.toLowerCase())
+                job.location.name.toLowerCase().includes(filter.toLowerCase()) ||
+                (job.departments && job.departments.some(dept => dept.name.toLowerCase().includes(filter.toLowerCase())))
             )
         );
         setFilteredJobs(filtered);
@@ -46,7 +43,7 @@ export default function Home() {
                 filters={filters}
                 onRemoveFilter={handleRemoveFilter}
             />
-            <p>{`${filteredJobs.length} of ${jobs.length}`}</p> {/* Display count of visible jobs */}
+            <p>{`${filteredJobs.length} of ${jobs.length}`}</p>
             <JobList jobs={filteredJobs} />
         </div>
     );
