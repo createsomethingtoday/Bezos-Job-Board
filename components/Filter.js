@@ -1,41 +1,71 @@
-// components/Filter.js
-
 import React, { useState } from 'react';
 
-function Filter({ onFilterChange, filters, onRemoveFilter }) {
-    const [input, setInput] = useState('');
+function Filter({ onKeywordFilterChange, onLocationFilterChange, keywordFilters, locationFilters, onRemoveFilter }) {
 
-    const handleInputChange = (e) => {
-        setInput(e.target.value);
-    };
+  const [keywordInput, setKeywordInput] = useState('');
+  const [locationInput, setLocationInput] = useState('');
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        onFilterChange(input);
-        setInput('');
-    };
+  const handleKeywordChange = (e) => {
+    setKeywordInput(e.target.value);
+  };
 
-    return (
-        <div>
-            <form onSubmit={handleFormSubmit}>
-                <input
-                    type="text"
-                    value={input}
-                    onChange={handleInputChange}
-                    placeholder="Search"
-                />
-                <input type="submit" value="Search" />
-            </form>
-            <div className="filter-tags">
-                {filters.map((filter, index) => (
-                    <div key={index} className="filter-tag">
-                        {filter}
-                        <button onClick={() => onRemoveFilter(filter)}>X</button>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+  const handleLocationChange = (e) => {
+    setLocationInput(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (keywordInput) {
+      onKeywordFilterChange(keywordInput);
+      setKeywordInput(''); 
+    }
+
+    if (locationInput) {
+      onLocationFilterChange(locationInput);
+      setLocationInput('');
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input 
+          type="text"
+          value={keywordInput}
+          onChange={handleKeywordChange}
+          placeholder="Search Keyword" 
+        />
+
+        <input
+          type="text" 
+          value={locationInput}
+          onChange={handleLocationChange}
+          placeholder="Search Location" 
+        />
+
+        <button type="submit">
+          Search
+        </button>
+      </form>
+
+      <div className="filter-tags">
+        {keywordFilters.map((filter, index) => (
+          <div key={index} className="filter-tag">
+            {filter}
+            <button onClick={() => onRemoveFilter(filter)}>X</button>
+          </div>
+        ))}
+        
+        {locationFilters.map((filter, index) => (
+          <div key={index} className="filter-tag">
+            {filter}
+            <button onClick={() => onRemoveFilter(filter)}>X</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default Filter;
