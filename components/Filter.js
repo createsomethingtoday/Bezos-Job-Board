@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Filter({ onKeywordFilterChange, onLocationFilterChange, keywordFilters, locationFilters, onRemoveFilter }) {
+function Filter({ onKeywordFilterChange, onLocationFilterChange, onRemoveFilter, keywordFilters, locationFilters }) {
 
   const [keywordInput, setKeywordInput] = useState('');
   const [locationInput, setLocationInput] = useState('');
@@ -50,14 +50,14 @@ function Filter({ onKeywordFilterChange, onLocationFilterChange, keywordFilters,
       </form>
 
       <div className="filter-tags">
-        {keywordFilters.map((filter, index) => (
+        {keywordFilters?.map((filter, index) => (
           <div key={index} className="filter-tag">
             {filter}
             <button onClick={() => onRemoveFilter(filter)}>X</button>
           </div>
         ))}
         
-        {locationFilters.map((filter, index) => (
+        {locationFilters?.map((filter, index) => (
           <div key={index} className="filter-tag">
             {filter}
             <button onClick={() => onRemoveFilter(filter)}>X</button>

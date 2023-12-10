@@ -21,7 +21,7 @@ function JobItem({ job }) {
         <div className={styles['c-card-details']}>{departments}</div>  
       </div>
 
-      <div className={styles['c-card-content-wrapper']}>
+      <div className={`${styles['c-card-content-wrapper']} ${styles['button-grid-wrapper']}`}>
         <a href={job.absolute_url} className={styles['c-card-button']} target="_blank" rel="noopener noreferrer">
           View Job  
         </a>
