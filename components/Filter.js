@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from '../styles/Filter.module.css';
 
 function Filter({ onKeywordFilterChange, onLocationFilterChange, onRemoveFilter, keywordFilters, locationFilters }) {
 
@@ -28,21 +29,25 @@ function Filter({ onKeywordFilterChange, onLocationFilterChange, onRemoveFilter,
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="text"
-          value={keywordInput}
-          onChange={handleKeywordChange}
-          placeholder="Search Keyword" 
-        />
+    <div className="c-board-search">
+      <form onSubmit={handleSubmit} className="c-search-wrapper">
+        <div className="c-search-input">
+          <input 
+            type="text"
+            value={keywordInput}
+            onChange={handleKeywordChange}
+            placeholder="Search Keyword" 
+          />
+        </div>
 
-        <input
-          type="text" 
-          value={locationInput}
-          onChange={handleLocationChange}
-          placeholder="Search Location" 
-        />
+        <div className="c-search-input">
+          <input
+            type="text" 
+            value={locationInput}
+            onChange={handleLocationChange}
+            placeholder="Search Location" 
+          />
+        </div>
 
         <button type="submit">
           Search

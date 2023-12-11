@@ -1,0 +1,18 @@
+.c-board-search {
+    background-color: var(--bezos-blue);
+    padding: 20px;
+  }
+  
+  .c-search-wrapper {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    display: flex;
+  }
+  
+  .c-search-input {
+    height: 60px;
+    background-color: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 50px;
+    flex: 1;
+  }
