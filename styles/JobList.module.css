@@ -38,6 +38,25 @@
     border-radius: 30px;
     text-transform: none;
   }
+
+  .c-board-search {
+    background-color: var(--bezos-blue);
+    padding: 20px;
+  }
+  
+  .c-search-wrapper {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    display: flex;
+  }
+  
+  .c-search-input {
+    height: 60px;
+    background-color: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 50px;
+    flex: 1;
+  }
   
   #w-node-_1bdff300-783f-00a9-dcbd-ba1fa2eda93a-af668cd5, #w-node-e4eaf054-928e-5dc5-3241-aa72798f16a5-af668cd5, #w-node-b4e775ad-5ef1-f24e-6dc2-8aa97497f205-af668cd5 {
     grid-area: span 1 / span 1 / span 1 / span 1;

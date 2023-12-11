@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styles from '../styles/Filter.module.css';
 
 function Filter({ onKeywordFilterChange, onLocationFilterChange, onRemoveFilter, keywordFilters, locationFilters }) {
 
