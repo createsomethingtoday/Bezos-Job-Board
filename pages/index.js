@@ -2,21 +2,26 @@ import { useEffect, useState } from 'react';
 
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
-import { fetchJobs } from '../services/greenhouseApi';
+import { fetchJobs, fetchDepartments, fetchOffices } from '../services/greenhouseApi';
 
 export default function Home() {
   // State
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [keywordFilters, setKeywordFilters] = useState([]);
-  const [locationFilters, setLocationFilters] = useState([]);
+  const [departmentFilters, setDepartmentFilters] = useState('');
+  const [officeFilters, setOfficeFilters] = useState('');
+  const [departments, setDepartments] = useState([]);
+  const [offices, setOffices] = useState([]);
 
-  // Fetch jobs
+  // Fetch jobs, departments, and offices
   useEffect(() => {
     fetchJobs(true).then(data => {
-      setJobs(data); 
+      setJobs(data);
       setFilteredJobs(data);
     });
+    fetchDepartments().then(setDepartments);
+    fetchOffices().then(setOffices);
   }, []);
 
   // Function to format the date
@@ -32,51 +37,57 @@ export default function Home() {
     }
   };
 
-  // Location filter 
-  const handleLocationFilter = (newFilter) => {
-    if (!locationFilters.includes(newFilter)) {
-      setLocationFilters(prev => [...prev, newFilter]);
-    }
+  // Department filter
+  const handleDepartmentFilter = (departmentId) => {
+    setDepartmentFilters(departmentId);
+  };
+
+  // Office (Location) filter 
+  const handleOfficeFilter = (officeId) => {
+    setOfficeFilters(officeId);
   };
 
   // Remove filter
-  const handleRemoveFilter = (filter) => {
+const handleRemoveFilter = (filter, filterType) => {
+  if (filterType === 'keyword') {
     setKeywordFilters(prev => prev.filter(f => f !== filter));
-    setLocationFilters(prev => prev.filter(f => f !== filter));
-  };
+  } else if (filterType === 'department') {
+    setDepartmentFilters('');
+  } else if (filterType === 'office') {
+    setOfficeFilters('');
+  }
+};
 
-  // Filter logic
-  useEffect(() => {
-    const filtered = jobs.filter(job => {
-      const formattedDate = formatDate(job.updated_at);
-      const keywordMatch = keywordFilters.every(filter => {
-        return job.title.toLowerCase().includes(filter.toLowerCase()) ||
-               (job.departments && job.departments.some(dept => dept.name.toLowerCase().includes(filter.toLowerCase()))) ||
-               formattedDate.toLowerCase().includes(filter.toLowerCase());
-      });
+// Filter logic
+useEffect(() => {
+  const filtered = jobs.filter(job => {
+    const formattedDate = formatDate(job.updated_at);
+    const keywordMatch = keywordFilters.length === 0 || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
+    
+    const departmentMatch = !departmentFilters || (job.departments && job.departments.some(dept => `${dept.id}` === departmentFilters));
+    
+    const officeMatch = !officeFilters || (job.offices && job.offices.some(office => `${office.id}` === officeFilters));
 
-      const locationMatch = !locationFilters.length || locationFilters.some(filter => {
-        return job.location.name.toLowerCase().includes(filter.toLowerCase());  
-      });
+    return keywordMatch && departmentMatch && officeMatch;
+  });
 
-      return keywordMatch && locationMatch;
-    });
+  setFilteredJobs(filtered);
 
-    setFilteredJobs(filtered);
-
-  }, [keywordFilters, locationFilters, jobs]);
+}, [keywordFilters, departmentFilters, officeFilters, jobs]);
 
   return (
     <div>
       <Filter
         onKeywordFilterChange={handleKeywordFilter}
-        onLocationFilterChange={handleLocationFilter}
+        onDepartmentFilterChange={handleDepartmentFilter}
+        onOfficeFilterChange={handleOfficeFilter}
         onRemoveFilter={handleRemoveFilter}
         keywordFilters={keywordFilters}
-        locationFilters={locationFilters}
+        departments={departments}
+        offices={offices}
       />
       <p>
-        <span>{filteredJobs.length}</span> of <span>{jobs.length}</span>
+        <span>{filteredJobs.length}</span> of <span>{jobs.length}</span> jobs
       </p>
       <JobList jobs={filteredJobs} />
     </div>

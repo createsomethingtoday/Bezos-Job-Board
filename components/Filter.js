@@ -1,80 +1,72 @@
 import React, { useState } from 'react';
 
-function Filter({ onKeywordFilterChange, onLocationFilterChange, onRemoveFilter, keywordFilters, locationFilters }) {
-
+function Filter({ onKeywordFilterChange, onDepartmentFilterChange, onOfficeFilterChange, onRemoveFilter, keywordFilters, departments, offices }) {
 const [keywordInput, setKeywordInput] = useState('');
-const [locationInput, setLocationInput] = useState('');
+const [selectedDepartment, setSelectedDepartment] = useState('');
+const [selectedOffice, setSelectedOffice] = useState('');
 
 const handleKeywordChange = (e) => {
 setKeywordInput(e.target.value);
 };
 
-const handleLocationChange = (e) => {
-setLocationInput(e.target.value);
-};
-
 const handleSubmit = (e) => {
 e.preventDefault();
-
 if (keywordInput) {
-onKeywordFilterChange(keywordInput);
-setKeywordInput(''); 
+    onKeywordFilterChange(keywordInput);
+    setKeywordInput(''); 
 }
+};
 
-if (locationInput) {
-onLocationFilterChange(locationInput);
-setLocationInput('');
-}
+const handleDepartmentChange = (e) => {
+setSelectedDepartment(e.target.value);
+onDepartmentFilterChange(e.target.value);
+};
+
+const handleOfficeChange = (e) => {
+setSelectedOffice(e.target.value);
+onOfficeFilterChange(e.target.value);
 };
 
 return (
-<div className="c-board-search">
-<form onSubmit={handleSubmit} className="c-search-wrapper">
+<div className="filter-container">
+    <form className="c-search-wrapper" onSubmit={handleSubmit}>
 
-<input 
-className="c-search-input"
-type="text"
-value={keywordInput}
-onChange={handleKeywordChange}
-placeholder="Search Keyword" 
-/>
+    <select className="c-search-select" value={selectedDepartment} onChange={handleDepartmentChange}>
+        <option value="">Select Department</option>
+        {departments.map((dept) => (
+        <option key={dept.id} value={dept.id}>{dept.name}</option>
+        ))}
+    </select>
 
+    <select className="c-search-select" value={selectedOffice} onChange={handleOfficeChange}>
+        <option value="">Select Office</option>
+        {offices.map((office) => (
+        <option key={office.id} value={office.id}>{office.name}</option>
+        ))}
+    </select>
 
+    <input 
+    className='c-search-input'
+        type="text"
+        value={keywordInput}
+        onChange={handleKeywordChange}
+        placeholder="Search Keyword"
+    />
 
-<input
-className="c-search-input"
-type="text" 
-value={locationInput}
-onChange={handleLocationChange}
-placeholder="Search Location" 
-/>
+    <button className="c-search-submit" type="submit">Search</button>
+    </form>
 
-<button type="submit"
-className='c-search-button'>
-Search
-</button>
-</form>
-
-<div className="filter-tags">
-{keywordFilters?.map((filter, index) => (
-<div key={index} className="filter-tag">
-{filter}
-<button onClick={() => onRemoveFilter(filter)}>X</button>
+    <div>
+  {keywordFilters.map((filter, index) => (
+    <span key={index} className="filter-tag">
+      {filter}
+      <button onClick={() => onRemoveFilter(filter, 'keyword')}>X</button>
+    </span>
+  ))}
 </div>
-))}
-
-{locationFilters?.map((filter, index) => (
-<div key={index} className="filter-tag">
-{filter}
-<button onClick={() => onRemoveFilter(filter)}>X</button>
-</div>
-))}
-</div>
-
-<style jsx>{`
+    <style jsx>{`
 .c-board-search {
-background-color: #1c478c;
-padding: 40px;
+padding: 20px;
 }
 
 .c-search-wrapper {
@@ -84,18 +76,41 @@ display: flex;
 }
 
 .c-search-input {
-height: 20px;
-background-color: #fff;
-border: 1px solid #e7e7e7;
-border-radius: 50px;
+border-bottom: 1px solid #1c478c;
+background-image: url('images/icon-search--blue.svg');
+background-position: 99%;
+background-repeat: no-repeat;
+background-size: auto 20px;
 flex: 1;
-padding: 20px;
+border-top: 0px;
+border-right: 0px;
+border-left: 0px;
 }
 
-.c-search-button {
-border-radius: 100%;
-height: 60px;
-width: 60px;
+.filter-tags {
+grid-column-gap: 10px;
+grid-row-gap: 10px;
+padding: 10px;
+display: flex;
+}
+
+.c-search-select {
+height: 40px;
+color: #1c478c;
+background-color: #fff;
+flex: 1;
+}
+
+.c-search-select:hover {
+background-color: #f5f5f6;
+}
+
+.c-search-submit {
+height: 40px;
+background-color: #1c478c;
+color: #fff;
+padding: 0px 30px;
+border: 0px;
 }
 
 .filter-tags {
