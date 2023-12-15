@@ -39,7 +39,7 @@ return (
     </select>
 
     <select className="c-search-select" value={selectedOffice} onChange={handleOfficeChange}>
-        <option value="">Select Office</option>
+        <option value="">Select Location</option>
         {offices.map((office) => (
         <option key={office.id} value={office.id}>{office.name}</option>
         ))}
