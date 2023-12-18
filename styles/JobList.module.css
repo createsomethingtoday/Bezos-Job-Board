@@ -28,7 +28,7 @@
     }
   }
 
-  @media screen and (max-width: 479px) {
+  @media screen and (max-width: 808px) {
     .c-board-card {
       flex-direction: column;
     }

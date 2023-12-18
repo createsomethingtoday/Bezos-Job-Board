@@ -87,6 +87,7 @@ flex: 1;
 border-top: 0px;
 border-right: 0px;
 border-left: 0px;
+height: 40px;
 }
 
 .filter-tag {
