@@ -132,6 +132,16 @@ display: flex;
 .filter-tag {
 
 }
+
+@media screen and (max-width: 767px) {
+  .c-search-wrapper {
+    flex-direction: column;
+  }
+
+  .c-search-select {
+    flex: none;
+  }
+}
 `}</style>
 </div>
 );

@@ -37,3 +37,11 @@
   grid-area: span 1 / span 1 / span 1 / span 1;
   justify-self: end;
 }
+
+
+@media screen and (max-width: 991px) {
+  .c-board-card {
+    flex-direction: column;
+    display: flex;
+  }
+}
