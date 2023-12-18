@@ -10,7 +10,7 @@ display: flex;
 
 .c-search-input {
 border-bottom: 1px solid #1c478c;
-background-image: url('images/icon-search--blue.svg');
+background-image: url('../images/icon-search--blue.svg');
 background-position: 99%;
 background-repeat: no-repeat;
 background-size: auto 20px;

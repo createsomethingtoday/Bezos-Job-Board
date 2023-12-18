@@ -57,12 +57,14 @@ return (
     </form>
 
     <div>
-  {keywordFilters.map((filter, index) => (
-    <span key={index} className="filter-tag">
-      {filter}
-      <button onClick={() => onRemoveFilter(filter, 'keyword')}>X</button>
-    </span>
-  ))}
+    <div className="filter-tag-wrapper">
+    {keywordFilters.map((filter, index) => (
+        <span key={index} className="filter-tag">
+            {filter}
+            <button onClick={() => onRemoveFilter(filter, 'keyword')}>X</button>
+        </span>
+    ))}
+</div>
 </div>
     <style jsx>{`
 .c-board-search {
@@ -77,7 +79,7 @@ display: flex;
 
 .c-search-input {
 border-bottom: 1px solid #1c478c;
-background-image: url('images/icon-search--blue.svg');
+background-image: url('../images/icon-search--blue.svg');
 background-position: 99%;
 background-repeat: no-repeat;
 background-size: auto 20px;
@@ -87,12 +89,18 @@ border-right: 0px;
 border-left: 0px;
 }
 
-.filter-tags {
-grid-column-gap: 10px;
-grid-row-gap: 10px;
-padding: 10px;
+.filter-tag {
+grid-column-gap: 5px;
+grid-row-gap: 5px;
 display: flex;
 }
+
+.filter-tag-wrapper {
+  display: flex;
+  padding: 5px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  }
 
 .c-search-select {
 height: 40px;
