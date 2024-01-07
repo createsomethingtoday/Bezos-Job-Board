@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
-// Import fetchDepartments and fetchOffices if they are still needed
+import { fetchDepartments, fetchOffices } from '../services/greenhouseApi';
 
 export default function Home() {
   const [jobs, setJobs] = useState([]);
@@ -13,7 +13,6 @@ export default function Home() {
   const [departments, setDepartments] = useState([]);
   const [offices, setOffices] = useState([]);
 
-  // Fetch jobs, departments, and offices
   useEffect(() => {
     // Fetch enriched job data from the greenhouseJobs API route
     fetch('/api/greenhouseJobs')
@@ -29,9 +28,9 @@ export default function Home() {
       })
       .catch(error => console.error('Error fetching jobs:', error));
 
-    // Fetch departments and offices if needed
-    // fetchDepartments().then(setDepartments);
-    // fetchOffices().then(setOffices);
+    // Fetch departments and offices
+    fetchDepartments().then(setDepartments);
+    fetchOffices().then(setOffices);
   }, []);
 
   // Function to format the date
@@ -72,9 +71,7 @@ export default function Home() {
   useEffect(() => {
     const filtered = jobs.filter(job => {
       const keywordMatch = keywordFilters.length === 0 || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
-      
       const departmentMatch = !departmentFilters || (job.departments && job.departments.some(dept => `${dept.id}` === departmentFilters));
-      
       const officeMatch = !officeFilters || (job.offices && job.offices.some(office => `${office.id}` === officeFilters));
 
       return keywordMatch && departmentMatch && officeMatch;
