@@ -25,7 +25,7 @@ function JobItem({ job }) {
   };
 
   return (
-    <div className={styles['c-board-card']}>
+    <a href={job.absolute_url} target="_blank" rel="noopener noreferrer"className={styles['c-board-card']}>
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Role</div>
         <div className={styles['c-card-details']}>{job.title}</div>
@@ -47,11 +47,11 @@ function JobItem({ job }) {
       </div>
 
       <div className={`${styles['c-card-content-wrapper']} ${styles['button-grid-wrapper']}`}>
-        <a href={job.absolute_url} className={styles['c-card-button']} target="_blank" rel="noopener noreferrer">
+        <div className={styles['c-card-button']}>
           View Job  
-        </a>
+        </div>
       </div>
-    </div>
+    </a>
   );
 }
 
