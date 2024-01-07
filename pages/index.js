@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
-import { fetchJobs, fetchDepartments, fetchOffices } from '../services/greenhouseApi';
+// Import fetchDepartments and fetchOffices if they are still needed
 
 export default function Home() {
-  // State
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [keywordFilters, setKeywordFilters] = useState([]);
@@ -16,12 +15,23 @@ export default function Home() {
 
   // Fetch jobs, departments, and offices
   useEffect(() => {
-    fetchJobs(true).then(data => {
-      setJobs(data);
-      setFilteredJobs(data);
-    });
-    fetchDepartments().then(setDepartments);
-    fetchOffices().then(setOffices);
+    // Fetch enriched job data from the greenhouseJobs API route
+    fetch('/api/greenhouseJobs')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setJobs(data);
+        setFilteredJobs(data);
+      })
+      .catch(error => console.error('Error fetching jobs:', error));
+
+    // Fetch departments and offices if needed
+    // fetchDepartments().then(setDepartments);
+    // fetchOffices().then(setOffices);
   }, []);
 
   // Function to format the date
@@ -48,32 +58,31 @@ export default function Home() {
   };
 
   // Remove filter
-const handleRemoveFilter = (filter, filterType) => {
-  if (filterType === 'keyword') {
-    setKeywordFilters(prev => prev.filter(f => f !== filter));
-  } else if (filterType === 'department') {
-    setDepartmentFilters('');
-  } else if (filterType === 'office') {
-    setOfficeFilters('');
-  }
-};
+  const handleRemoveFilter = (filter, filterType) => {
+    if (filterType === 'keyword') {
+      setKeywordFilters(prev => prev.filter(f => f !== filter));
+    } else if (filterType === 'department') {
+      setDepartmentFilters('');
+    } else if (filterType === 'office') {
+      setOfficeFilters('');
+    }
+  };
 
-// Filter logic
-useEffect(() => {
-  const filtered = jobs.filter(job => {
-    const formattedDate = formatDate(job.updated_at);
-    const keywordMatch = keywordFilters.length === 0 || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
-    
-    const departmentMatch = !departmentFilters || (job.departments && job.departments.some(dept => `${dept.id}` === departmentFilters));
-    
-    const officeMatch = !officeFilters || (job.offices && job.offices.some(office => `${office.id}` === officeFilters));
+  // Filter logic
+  useEffect(() => {
+    const filtered = jobs.filter(job => {
+      const keywordMatch = keywordFilters.length === 0 || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
+      
+      const departmentMatch = !departmentFilters || (job.departments && job.departments.some(dept => `${dept.id}` === departmentFilters));
+      
+      const officeMatch = !officeFilters || (job.offices && job.offices.some(office => `${office.id}` === officeFilters));
 
-    return keywordMatch && departmentMatch && officeMatch;
-  });
+      return keywordMatch && departmentMatch && officeMatch;
+    });
 
-  setFilteredJobs(filtered);
+    setFilteredJobs(filtered);
 
-}, [keywordFilters, departmentFilters, officeFilters, jobs]);
+  }, [keywordFilters, departmentFilters, officeFilters, jobs]);
 
   return (
     <div>
