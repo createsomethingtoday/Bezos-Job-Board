@@ -54,7 +54,7 @@ function JobItem({ job }) {
       </div>
 
       <div className={styles['c-card-content-wrapper']}>
-        <div className={styles['c-card-label']}>Support Type</div>
+        <div className={styles['c-card-label']}>Role Type</div>
         <div className={styles['c-card-details']}>{inSchoolDisplay}</div>
       </div>
 
