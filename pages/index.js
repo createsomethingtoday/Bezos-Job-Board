@@ -77,13 +77,28 @@ export default function Home() {
     setFilteredJobs(filtered);
   }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
 
-  // Function to post the height of the content to the parent window
   const postHeightToParent = () => {
-    if (window.parent && window.document.body) {
-      const height = document.body.scrollHeight; 
-      window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/'); // Replace with your WordPress site's domain
-    }
+    setTimeout(() => {
+      if (window.parent && window.document.body) {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/');
+      }
+    }, 500); // Adjust delay as needed
   };
+
+  useEffect(() => {
+    const handleLoad = () => {
+      postHeightToParent();
+      window.removeEventListener('load', handleLoad);
+    };
+
+    window.addEventListener('load', handleLoad);
+    window.addEventListener('resize', postHeightToParent);
+
+    return () => {
+      window.removeEventListener('resize', postHeightToParent);
+    };
+  }, []);
 
   useEffect(() => {
     postHeightToParent();
