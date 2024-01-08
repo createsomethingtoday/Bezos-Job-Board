@@ -1,71 +1,57 @@
 import React, { useState } from 'react';
-import styles from 'styles/Filter.module.css';
+import styles from '../styles/Filter.module.css';
 
-function Filter({ employmentTypes, onKeywordFilterChange, onRemoveKeywordFilter, onDepartmentFilterChange, onOfficeFilterChange, onEmploymentTypeFilterChange, keywordFilters, departments, offices }) {
+function Filter({ 
+    employmentTypes, 
+    supportTypes, 
+    onKeywordFilterChange, 
+    onRemoveKeywordFilter, 
+    onDepartmentFilterChange, 
+    onOfficeFilterChange, 
+    onEmploymentTypeFilterChange, 
+    onSupportTypeFilterChange, 
+    keywordFilters, 
+    departments, 
+    offices 
+}) {
   const [keywordInput, setKeywordInput] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedOffice, setSelectedOffice] = useState('');
-  const [selectedEmploymentType, setSelectedEmploymentType] = useState('');
 
-  const handleKeywordChange = (e) => {
-    setKeywordInput(e.target.value);
-  };
+  const handleKeywordChange = (e) => setKeywordInput(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (keywordInput) {
+    if (keywordInput.trim()) {
       onKeywordFilterChange(keywordInput.trim());
       setKeywordInput('');
     }
   };
 
-  const handleDepartmentChange = (e) => {
-    setSelectedDepartment(e.target.value);
-    onDepartmentFilterChange(e.target.value);
-  };
-
-  const handleOfficeChange = (e) => {
-    setSelectedOffice(e.target.value);
-    onOfficeFilterChange(e.target.value);
-  };
-
-  const handleEmploymentTypeChange = (e) => {
-    setSelectedEmploymentType(e.target.value);
-    onEmploymentTypeFilterChange(e.target.value);
-  };
+  const createSelectHandler = (onChange) => (e) => onChange(e.target.value);
 
   return (
     <div className={styles['filter-container']}>
       <form className={styles['c-search-wrapper']} onSubmit={handleSubmit}>
-        <select className={styles['c-search-select']} value={selectedDepartment} onChange={handleDepartmentChange}>
+        <select className={styles['c-search-select']} onChange={createSelectHandler(onDepartmentFilterChange)}>
           <option value="">Select Department</option>
-          {departments.map(dept => (
-            <option key={dept.id} value={dept.id}>{dept.name}</option>
-          ))}
+          {departments.map(dept => <option key={dept.id} value={dept.id}>{dept.name}</option>)}
         </select>
 
-        <select className={styles['c-search-select']} value={selectedOffice} onChange={handleOfficeChange}>
+        <select className={styles['c-search-select']} onChange={createSelectHandler(onOfficeFilterChange)}>
           <option value="">Select Location</option>
-          {offices.map(office => (
-            <option key={office.id} value={office.id}>{office.name}</option>
-          ))}
+          {offices.map(office => <option key={office.id} value={office.id}>{office.name}</option>)}
         </select>
 
-        <select className={styles['c-search-select']} value={selectedEmploymentType} onChange={handleEmploymentTypeChange}>
+        <select className={styles['c-search-select']} onChange={createSelectHandler(onEmploymentTypeFilterChange)}>
           <option value="">Select Employment Type</option>
-          {employmentTypes.map((type, index) => (
-            <option key={index} value={type}>{type}</option>
-          ))}
+          {employmentTypes.map((type, index) => <option key={index} value={type}>{type}</option>)}
         </select>
 
-        <input 
-          className={styles['c-search-input']}
-          type="text"
-          value={keywordInput}
-          onChange={handleKeywordChange}
-          placeholder="Search Keyword"
-        />
+        <select className={styles['c-search-select']} onChange={createSelectHandler(onSupportTypeFilterChange)}>
+          <option value="">Select Support Type</option>
+          {supportTypes.map((type, index) => <option key={index} value={type}>{type}</option>)}
+        </select>
 
+        <input className={styles['c-search-input']} type="text" value={keywordInput} onChange={handleKeywordChange} placeholder="Search Keyword" />
         <button className={styles['c-search-submit']} type="submit">Search</button>
       </form>
 

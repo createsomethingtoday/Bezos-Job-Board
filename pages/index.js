@@ -10,9 +10,11 @@ export default function Home() {
   const [departmentFilters, setDepartmentFilters] = useState('');
   const [officeFilters, setOfficeFilters] = useState('');
   const [employmentTypeFilter, setEmploymentTypeFilter] = useState('');
+  const [supportTypeFilter, setSupportTypeFilter] = useState('');
   const [departments, setDepartments] = useState([]);
   const [offices, setOffices] = useState([]);
   const [employmentTypes, setEmploymentTypes] = useState([]);
+  const [supportTypes, setSupportTypes] = useState([]);
 
   useEffect(() => {
     fetch('/api/greenhouseJobs')
@@ -20,73 +22,77 @@ export default function Home() {
       .then(data => {
         setJobs(data);
         setFilteredJobs(data);
+
         const uniqueTypes = new Set();
+        const uniqueSupportTypes = new Set();
         data.forEach(job => {
-          if (job.keyed_custom_fields && job.keyed_custom_fields.employment_type) {
+          if (job.keyed_custom_fields?.employment_type?.value) {
             uniqueTypes.add(job.keyed_custom_fields.employment_type.value);
+          }
+          if (job.keyed_custom_fields?.team?.value) {
+            const displayType = getInSchoolDisplay(job.keyed_custom_fields.team.value);
+            uniqueSupportTypes.add(displayType);
           }
         });
         setEmploymentTypes([...uniqueTypes]);
+        setSupportTypes([...uniqueSupportTypes]);
       })
       .catch(error => console.error('Error fetching jobs:', error));
+
     fetchDepartments().then(setDepartments);
     fetchOffices().then(setOffices);
   }, []);
 
   const handleKeywordFilter = (newKeyword) => {
-    setKeywordFilters(prevKeywords => {
-      if (newKeyword && typeof newKeyword === 'string' && !prevKeywords.includes(newKeyword)) {
-        return [...prevKeywords, newKeyword];
-      }
-      return prevKeywords;
-    });
+    setKeywordFilters(prev => newKeyword ? [...prev, newKeyword] : prev);
   };
 
   const removeKeywordFilter = (keywordToRemove) => {
-    setKeywordFilters(prevKeywords => prevKeywords.filter(keyword => keyword !== keywordToRemove));
+    setKeywordFilters(prev => prev.filter(keyword => keyword !== keywordToRemove));
   };
 
-  const handleDepartmentFilter = (departmentId) => {
-    setDepartmentFilters(departmentId);
+  const handleFilterChange = (setter) => (value) => {
+    setter(value);
   };
 
-  const handleOfficeFilter = (officeId) => {
-    setOfficeFilters(officeId);
-  };
-
-  const handleEmploymentTypeFilter = (type) => {
-    setEmploymentTypeFilter(type);
+  const getInSchoolDisplay = (teamValue) => {
+    switch (teamValue) {
+      case 'NSN': return 'National Support';
+      case 'NST': return 'In School Position';
+      default: return teamValue;
+    }
   };
 
   useEffect(() => {
     const filtered = jobs.filter(job => {
-      const keywordMatch = keywordFilters.length === 0 || keywordFilters.some(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
-      const departmentMatch = !departmentFilters || (job.departments && job.departments.some(dept => `${dept.id}` === departmentFilters));
-      const officeMatch = !officeFilters || (job.offices && job.offices.some(office => `${office.id}` === officeFilters));
-      const employmentTypeMatch = !employmentTypeFilter || (job.keyed_custom_fields && job.keyed_custom_fields.employment_type && job.keyed_custom_fields.employment_type.value === employmentTypeFilter);
+      const keywordMatch = !keywordFilters.length || keywordFilters.some(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
+      const departmentMatch = !departmentFilters || job.departments?.some(dept => `${dept.id}` === departmentFilters);
+      const officeMatch = !officeFilters || job.offices?.some(office => `${office.id}` === officeFilters);
+      const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
+      const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
 
-      return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch;
+      return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch;
     });
 
     setFilteredJobs(filtered);
-  }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, jobs]);
+  }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
 
   return (
     <div>
       <Filter
         employmentTypes={employmentTypes}
+        supportTypes={supportTypes}
         onKeywordFilterChange={handleKeywordFilter}
         onRemoveKeywordFilter={removeKeywordFilter}
-        onDepartmentFilterChange={handleDepartmentFilter}
-        onOfficeFilterChange={handleOfficeFilter}
-        onEmploymentTypeFilterChange={handleEmploymentTypeFilter}
+        onDepartmentFilterChange={handleFilterChange(setDepartmentFilters)}
+        onOfficeFilterChange={handleFilterChange(setOfficeFilters)}
+        onEmploymentTypeFilterChange={handleFilterChange(setEmploymentTypeFilter)}
+        onSupportTypeFilterChange={handleFilterChange(setSupportTypeFilter)}
         keywordFilters={keywordFilters}
         departments={departments}
         offices={offices}
       />
-      <p>
-        <span>{filteredJobs.length}</span> of <span>{jobs.length}</span> jobs
-      </p>
+      <p><span>{filteredJobs.length}</span> of <span>{jobs.length}</span> jobs</p>
       <JobList jobs={filteredJobs} />
     </div>
   );
