@@ -79,6 +79,7 @@ export default function Home() {
   }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
 
   const router = useRouter();
+  const contentRef = useRef();
 
   // Function to post height to the parent window
   const postHeightToParent = () => {
@@ -88,8 +89,8 @@ export default function Home() {
     }
   };
 
+  // Post height on route change complete
   useEffect(() => {
-    // Post height on route change complete
     const handleRouteChangeComplete = () => {
       postHeightToParent();
     };
@@ -98,12 +99,21 @@ export default function Home() {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChangeComplete);
     };
-  }, [router.events]); // Depend on router.events
+  }, [router.events]);
 
+  // Post height after rendering and periodically check for changes
   useEffect(() => {
-    // Post height after rendering
     postHeightToParent();
+
+    const interval = setInterval(() => {
+      if (contentRef.current && contentRef.current.scrollHeight !== document.documentElement.scrollHeight) {
+        postHeightToParent();
+      }
+    }, 1000); // Adjust interval timing as needed
+
+    return () => clearInterval(interval);
   }, [filteredJobs]); // Add any other dependencies that might change the height of the page
+
 
   return (
     <div>
