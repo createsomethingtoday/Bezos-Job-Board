@@ -47,7 +47,7 @@ function Filter({
         </select>
 
         <select className={styles['c-search-select']} onChange={createSelectHandler(onSupportTypeFilterChange)}>
-          <option value="">Select Support Type</option>
+          <option value="">Select Role Type</option>
           {supportTypes.map((type, index) => <option key={index} value={type}>{type}</option>)}
         </select>
 
