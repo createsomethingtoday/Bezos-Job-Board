@@ -16,8 +16,23 @@ function JobItem({ job }) {
     ? job.offices.map(office => office.name).join(', ') 
     : 'N/A';
 
+  // Function to determine the display text for 'In School' based on the team value
+  const getInSchoolDisplay = (teamValue) => {
+    switch (teamValue) {
+      case 'NSN':
+        return 'National Support';
+      case 'NST':
+        return 'In School Position';
+      default:
+        return teamValue; // Default to the original value if it's neither NSN nor NST
+    }
+  };
+
   // Extracting the team value from keyed_custom_fields
-  const team = job.keyed_custom_fields && job.keyed_custom_fields.team ? job.keyed_custom_fields.team.value : 'N/A';
+  const teamValue = job.keyed_custom_fields && job.keyed_custom_fields.team 
+                     ? job.keyed_custom_fields.team.value 
+                     : 'N/A';
+  const inSchoolDisplay = getInSchoolDisplay(teamValue);
 
   const formatDate = (dateStr) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -39,8 +54,8 @@ function JobItem({ job }) {
       </div>
 
       <div className={styles['c-card-content-wrapper']}>
-        <div className={styles['c-card-label']}>In School</div>
-        <div className={styles['c-card-details']}>{team}</div>
+        <div className={styles['c-card-label']}>Support Type</div>
+        <div className={styles['c-card-details']}>{inSchoolDisplay}</div>
       </div>
 
       <div className={styles['c-card-content-wrapper']}>
