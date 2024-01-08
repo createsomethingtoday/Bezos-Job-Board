@@ -81,7 +81,7 @@ export default function Home() {
   const postHeightToParent = () => {
     if (window.parent && window.document.body) {
       const height = document.body.scrollHeight; 
-      window.parent.postMessage({ height: height }, 'https://your-wordpress-domain.com'); // Replace with your WordPress site's domain
+      window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/'); // Replace with your WordPress site's domain
     }
   };
 
