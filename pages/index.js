@@ -65,7 +65,7 @@ export default function Home() {
 
   useEffect(() => {
     const filtered = jobs.filter(job => {
-      const keywordMatch = !keywordFilters.length || keywordFilters.some(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
+      const keywordMatch = !keywordFilters.length || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
       const departmentMatch = !departmentFilters || job.departments?.some(dept => `${dept.id}` === departmentFilters);
       const officeMatch = !officeFilters || job.offices?.some(office => `${office.id}` === officeFilters);
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
@@ -96,14 +96,9 @@ export default function Home() {
     window.addEventListener('resize', postHeightToParent);
 
     return () => {
+      window.removeEventListener('load', handleLoad);
       window.removeEventListener('resize', postHeightToParent);
     };
-  }, []);
-
-  useEffect(() => {
-    postHeightToParent();
-    window.addEventListener('resize', postHeightToParent);
-    return () => window.removeEventListener('resize', postHeightToParent);
   }, []);
 
   return (
