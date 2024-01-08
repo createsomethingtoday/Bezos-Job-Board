@@ -55,6 +55,7 @@ function Filter({
         <button className={styles['c-search-submit']} type="submit">Search</button>
       </form>
 
+      {keywordFilters.length > 0 && ( // This line checks if keywordFilters array has any items
       <div className={styles['filter-tag-wrapper']}>
         {keywordFilters.map((filter, index) => (
           <span key={index} className={styles['filter-tag']}>
@@ -63,6 +64,7 @@ function Filter({
           </span>
         ))}
       </div>
+    )}
     </div>
   );
 }

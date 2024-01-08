@@ -8,11 +8,16 @@
   color: #333;
   border-bottom: 1px solid #e7e7e7;
   grid-template-rows: auto;
-  grid-template-columns: 1fr 1fr .5fr 1fr .5fr;
+  grid-template-columns: 1.5fr .5fr .5fr 1fr .5fr;
   grid-auto-columns: 1fr;
   padding: 20px;
   text-decoration: none;
+  transition: background-color .3s;
   display: grid;
+}
+
+.c-board-card:hover {
+  background-color: #f2f4f8;
 }
 
 .c-board-card.is-tri {

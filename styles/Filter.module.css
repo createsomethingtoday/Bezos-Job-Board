@@ -22,19 +22,50 @@ height: 40px;
 }
 
 .filter-tag-wrapper {
-grid-column-gap: 20px;
-grid-row-gap: 20px;
-padding: 10px;
-display: flex;
-}
-
-.filter-tag {
-
-}
-
-.filter-tag button {
-    margin-left: 5px;
-}
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    background-color: #f2f4f8; /* A light grey background for the tag wrapper */
+    border-radius: 6px; /* Slightly rounded corners for the wrapper */
+    margin-top: 10px; /* Space above the tag wrapper */
+  }
+  
+  .filter-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff; /* White background for tags */
+    color: #333333; /* Dark grey text for better contrast */
+    border: 1px solid #ccd1d9; /* Border to make the tags stand out */
+    border-radius: 15px; /* Pill-shaped tags */
+    padding: 5px 12px; /* Top and bottom padding with more side padding */
+    font-size: 0.875rem; /* Smaller font size for the tags */
+    margin-right: 4px; /* Right margin for spacing between tags */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* A subtle shadow for depth */
+    cursor: default;
+    transition: background-color 0.3s; /* Transition for hover effect */
+  }
+  
+  .filter-tag:hover {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+  }
+  
+  .filter-tag button {
+    background-color: transparent;
+    border: none;
+    color: #6c757d; /* Darker grey for the 'X' button */
+    font-weight: bold; /* Make the 'X' more pronounced */
+    cursor: pointer;
+    margin-left: 8px; /* Spacing between tag text and 'X' button */
+    padding: 0;
+    line-height: 1;
+    transition: color 0.3s; /* Transition for hover effect */
+  }
+  
+  .filter-tag button:hover {
+    color: #dc3545; /* Change color when hovering over the 'X' button for delete action */
+  }
+  
 
 .c-search-select {
 height: 40px;
