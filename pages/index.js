@@ -58,8 +58,8 @@ export default function Home() {
 
   const getInSchoolDisplay = (teamValue) => {
     switch (teamValue) {
-      case 'NSN': return 'National Support';
-      case 'NST': return 'In School Position';
+      case 'NST': return 'National Support';
+      case 'NSN': return 'In School Position';
       default: return teamValue;
     }
   };
