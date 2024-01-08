@@ -1,23 +1,29 @@
 .c-board-wrapper {
   padding: 20px;
+  background-color: #f2f4f8; /* Consistent with the filter wrapper background */
 }
 
 .c-board-card {
   grid-column-gap: 16px;
   grid-row-gap: 16px;
   color: #333;
-  border-bottom: 1px solid #e7e7e7;
+  border: 1px solid #ccd1d9; /* Lighter border color for a more subtle effect */
+  border-radius: 6px; /* Rounded corners like the filter tags */
   grid-template-rows: auto;
   grid-template-columns: 1.5fr .5fr .5fr 1fr .5fr;
   grid-auto-columns: 1fr;
   padding: 20px;
   text-decoration: none;
-  transition: background-color .3s;
+  transition: background-color .3s, box-shadow .3s; /* Transition for background and shadow */
   display: grid;
+  background-color: #ffffff; /* White background for cards */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  margin-bottom: 16px; /* Space between cards */
 }
 
 .c-board-card:hover {
-  background-color: #f2f4f8;
+  background-color: #e9ecef; /* Slightly darker background on hover, like filter tags */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Larger shadow on hover for lift effect */
 }
 
 .c-board-card.is-tri {
@@ -28,26 +34,33 @@
   margin-bottom: 5px;
   font-size: 1.15rem;
   font-weight: 700;
+  color: #1c478c; /* Adding color to match the filter-tags */
 }
 
 .c-card-label {
   margin-bottom: 5px;
+  color: #495057; /* Dark grey text for better contrast */
 }
 
 .c-card-details {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1rem; /* Slightly smaller font size for a more refined look */
+  font-weight: 700; /* Normal font weight for details */
 }
 
 .c-card-button {
-  padding: 0.75rem 1.25rem;
+  padding: 0.5rem 1rem;
   background-color: #1c478c;
   color: #fff;
   font-weight: 400;
   text-decoration: none;
-  border-radius: 30px;
+  border-radius: 20px; /* Pill-shaped buttons like the filter tags */
   text-transform: none;
   text-align: center;
+  transition: background-color .3s; /* Transition for a hover effect */
+}
+
+.c-card-button:hover {
+  background-color: #163a64; /* Darker shade on hover for button */
 }
 
 .c-card-button.is-with-width {

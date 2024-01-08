@@ -1,25 +1,61 @@
 .c-board-search {
-padding: 20px;
-}
-
-.c-search-wrapper {
-grid-column-gap: 20px;
-grid-row-gap: 20px;
-display: flex;
-}
-
-.c-search-input {
-border-bottom: 1px solid #1c478c;
-background-image: url('../images/icon-search--blue.svg');
-background-position: 99%;
-background-repeat: no-repeat;
-background-size: auto 20px;
-flex: 1;
-border-top: 0px;
-border-right: 0px;
-border-left: 0px;
-height: 40px;
-}
+    padding: 20px;
+    background-color: #ffffff; /* Consistent white background */
+    border-radius: 6px; /* Rounded corners for the search container */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    margin-bottom: 20px; /* Space between search and the next elements */
+  }
+  
+  .c-search-wrapper {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    display: flex;
+    align-items: center; /* Align items for a cleaner look */
+  }
+  
+  .c-search-input {
+    border: 1px solid #ccd1d9; /* Lighter border color for a more subtle effect */
+    border-radius: 20px; /* Pill-shaped input field */
+    background-image: url('../images/icon-search--blue.svg');
+    background-position: calc(100% - 10px) center; /* Adjust position to not touch the border */
+    background-repeat: no-repeat;
+    background-size: auto 20px;
+    flex: 1;
+    height: 40px;
+    padding: 0 20px; /* Padding inside the input field */
+    font-size: 1rem; /* Font size that matches the overall design */
+    color: #495057; /* Color consistent with the tags */
+  }
+  
+  /* Add focus style for input to improve UX */
+  .c-search-input:focus {
+    outline: none;
+    border-color: #1c478c; /* Focus color */
+    box-shadow: 0 0 0 2px rgba(28,71,140,0.2); /* Subtle shadow on focus */
+  }
+  
+  /* Adjustments for responsive design can be added in media queries */
+  @media screen and (max-width: 991px) {
+    .c-board-search {
+      padding: 15px;
+    }
+  
+    .c-search-input {
+      padding: 0 15px;
+    }
+  }
+  
+  @media screen and (max-width: 767px) {
+    .c-search-wrapper {
+      grid-column-gap: 10px;
+      grid-row-gap: 10px;
+    }
+  
+    .c-search-input {
+      background-position: calc(100% - 15px) center; /* Adjust position for smaller screens */
+    }
+  }
+  
 
 .filter-tag-wrapper {
     display: flex;
