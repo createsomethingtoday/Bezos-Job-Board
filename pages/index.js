@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'; // Import useRouter
+import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
 import { fetchDepartments, fetchOffices } from '../services/greenhouseApi';
