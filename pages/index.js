@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
 import { fetchDepartments, fetchOffices } from '../services/greenhouseApi';
@@ -10,84 +9,77 @@ export default function Home() {
   const [keywordFilters, setKeywordFilters] = useState([]);
   const [departmentFilters, setDepartmentFilters] = useState('');
   const [officeFilters, setOfficeFilters] = useState('');
+  const [employmentTypeFilter, setEmploymentTypeFilter] = useState('');
   const [departments, setDepartments] = useState([]);
   const [offices, setOffices] = useState([]);
+  const [employmentTypes, setEmploymentTypes] = useState([]);
 
   useEffect(() => {
-    // Fetch enriched job data from the greenhouseJobs API route
     fetch('/api/greenhouseJobs')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
         setJobs(data);
         setFilteredJobs(data);
+        const uniqueTypes = new Set();
+        data.forEach(job => {
+          if (job.keyed_custom_fields && job.keyed_custom_fields.employment_type) {
+            uniqueTypes.add(job.keyed_custom_fields.employment_type.value);
+          }
+        });
+        setEmploymentTypes([...uniqueTypes]);
       })
       .catch(error => console.error('Error fetching jobs:', error));
-
-    // Fetch departments and offices
     fetchDepartments().then(setDepartments);
     fetchOffices().then(setOffices);
   }, []);
 
-  // Function to format the date
-  const formatDate = (dateStr) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateStr).toLocaleDateString('en-US', options);
+  const handleKeywordFilter = (newKeyword) => {
+    setKeywordFilters(prevKeywords => {
+      if (newKeyword && typeof newKeyword === 'string' && !prevKeywords.includes(newKeyword)) {
+        return [...prevKeywords, newKeyword];
+      }
+      return prevKeywords;
+    });
   };
 
-  // Keyword filter
-  const handleKeywordFilter = (newFilter) => {
-    if (!keywordFilters.includes(newFilter)) {
-      setKeywordFilters(prev => [...prev, newFilter]);
-    }
+  const removeKeywordFilter = (keywordToRemove) => {
+    setKeywordFilters(prevKeywords => prevKeywords.filter(keyword => keyword !== keywordToRemove));
   };
 
-  // Department filter
   const handleDepartmentFilter = (departmentId) => {
     setDepartmentFilters(departmentId);
   };
 
-  // Office (Location) filter 
   const handleOfficeFilter = (officeId) => {
     setOfficeFilters(officeId);
   };
 
-  // Remove filter
-  const handleRemoveFilter = (filter, filterType) => {
-    if (filterType === 'keyword') {
-      setKeywordFilters(prev => prev.filter(f => f !== filter));
-    } else if (filterType === 'department') {
-      setDepartmentFilters('');
-    } else if (filterType === 'office') {
-      setOfficeFilters('');
-    }
+  const handleEmploymentTypeFilter = (type) => {
+    setEmploymentTypeFilter(type);
   };
 
-  // Filter logic
   useEffect(() => {
     const filtered = jobs.filter(job => {
-      const keywordMatch = keywordFilters.length === 0 || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
+      const keywordMatch = keywordFilters.length === 0 || keywordFilters.some(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
       const departmentMatch = !departmentFilters || (job.departments && job.departments.some(dept => `${dept.id}` === departmentFilters));
       const officeMatch = !officeFilters || (job.offices && job.offices.some(office => `${office.id}` === officeFilters));
+      const employmentTypeMatch = !employmentTypeFilter || (job.keyed_custom_fields && job.keyed_custom_fields.employment_type && job.keyed_custom_fields.employment_type.value === employmentTypeFilter);
 
-      return keywordMatch && departmentMatch && officeMatch;
+      return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch;
     });
 
     setFilteredJobs(filtered);
-
-  }, [keywordFilters, departmentFilters, officeFilters, jobs]);
+  }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, jobs]);
 
   return (
     <div>
       <Filter
+        employmentTypes={employmentTypes}
         onKeywordFilterChange={handleKeywordFilter}
+        onRemoveKeywordFilter={removeKeywordFilter}
         onDepartmentFilterChange={handleDepartmentFilter}
         onOfficeFilterChange={handleOfficeFilter}
-        onRemoveFilter={handleRemoveFilter}
+        onEmploymentTypeFilterChange={handleEmploymentTypeFilter}
         keywordFilters={keywordFilters}
         departments={departments}
         offices={offices}

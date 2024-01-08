@@ -24,16 +24,23 @@ function JobItem({ job }) {
     return new Date(dateStr).toLocaleDateString('en-US', options);
   };
 
+  // Function to format job title by removing location if present
+  const formatJobTitle = (title) => {
+    // Regex pattern to match 'Title: City, State'
+    const locationPattern = /:\s[^,]+,\s[^,]+$/;
+    return title.replace(locationPattern, '');
+  };
+
   return (
-    <a href={job.absolute_url} target="_blank" rel="noopener noreferrer"className={styles['c-board-card']}>
+    <a href={job.absolute_url} target="_blank" rel="noopener noreferrer" className={styles['c-board-card']}>
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Role</div>
-        <div className={styles['c-card-details']}>{job.title}</div>
+        <div className={styles['c-card-details']}>{formatJobTitle(job.title)}</div>
       </div>
 
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>In School</div>
-        <div className={styles['c-card-details']}>{team}</div> {/* Displaying the team value here */}
+        <div className={styles['c-card-details']}>{team}</div>
       </div>
 
       <div className={styles['c-card-content-wrapper']}>
