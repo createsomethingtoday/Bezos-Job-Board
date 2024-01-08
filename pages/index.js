@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router'; // Import useRouter
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
 import { fetchDepartments, fetchOffices } from '../services/greenhouseApi';
@@ -15,6 +16,7 @@ export default function Home() {
   const [offices, setOffices] = useState([]);
   const [employmentTypes, setEmploymentTypes] = useState([]);
   const [supportTypes, setSupportTypes] = useState([]);
+  const router = useRouter(); // Use the useRouter hook
 
   useEffect(() => {
     fetch('/api/greenhouseJobs')
@@ -77,29 +79,30 @@ export default function Home() {
     setFilteredJobs(filtered);
   }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
 
+  // Function to post height to the parent window
   const postHeightToParent = () => {
-    setTimeout(() => {
-      if (window.parent && window.document.body) {
-        const height = document.body.scrollHeight;
-        window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/');
-      }
-    }, 500); // Adjust delay as needed
+    if (window.parent && window.document.body) {
+      const height = document.documentElement.scrollHeight;
+      window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/');
+    }
   };
 
+  // Post height on route change complete
   useEffect(() => {
-    const handleLoad = () => {
+    const handleRouteChangeComplete = () => {
       postHeightToParent();
-      window.removeEventListener('load', handleLoad);
     };
 
-    window.addEventListener('load', handleLoad);
-    window.addEventListener('resize', postHeightToParent);
-
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
     return () => {
-      window.removeEventListener('load', handleLoad);
-      window.removeEventListener('resize', postHeightToParent);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
     };
-  }, []);
+  }, [router.events]); // Depend on router.events
+
+  // Post height after rendering
+  useEffect(() => {
+    postHeightToParent();
+  }, [filteredJobs]); // Add any other dependencies that might change the height of the page
 
   return (
     <div>
