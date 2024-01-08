@@ -18,7 +18,7 @@
   display: grid;
   background-color: #ffffff; /* White background for cards */
   box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-  margin-bottom: 16px; /* Space between cards */
+  margin-bottom: 6px; /* Space between cards */
   font-family: system-ui;
 }
 
