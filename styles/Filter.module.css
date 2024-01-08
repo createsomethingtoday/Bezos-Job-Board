@@ -21,11 +21,19 @@ border-left: 0px;
 height: 40px;
 }
 
-.filter-tags {
-grid-column-gap: 10px;
-grid-row-gap: 10px;
+.filter-tag-wrapper {
+grid-column-gap: 20px;
+grid-row-gap: 20px;
 padding: 10px;
 display: flex;
+}
+
+.filter-tag {
+
+}
+
+.filter-tag button {
+    margin-left: 5px;
 }
 
 .c-search-select {
