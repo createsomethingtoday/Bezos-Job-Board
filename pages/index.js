@@ -16,7 +16,6 @@ export default function Home() {
   const [offices, setOffices] = useState([]);
   const [employmentTypes, setEmploymentTypes] = useState([]);
   const [supportTypes, setSupportTypes] = useState([]);
-  const router = useRouter(); // Use the useRouter hook
 
   useEffect(() => {
     fetch('/api/greenhouseJobs')
@@ -79,6 +78,8 @@ export default function Home() {
     setFilteredJobs(filtered);
   }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
 
+  const router = useRouter();
+
   // Function to post height to the parent window
   const postHeightToParent = () => {
     if (window.parent && window.document.body) {
@@ -87,8 +88,8 @@ export default function Home() {
     }
   };
 
-  // Post height on route change complete
   useEffect(() => {
+    // Post height on route change complete
     const handleRouteChangeComplete = () => {
       postHeightToParent();
     };
@@ -99,8 +100,8 @@ export default function Home() {
     };
   }, [router.events]); // Depend on router.events
 
-  // Post height after rendering
   useEffect(() => {
+    // Post height after rendering
     postHeightToParent();
   }, [filteredJobs]); // Add any other dependencies that might change the height of the page
 
