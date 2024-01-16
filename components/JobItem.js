@@ -19,9 +19,9 @@ function JobItem({ job }) {
   // Function to determine the display text for 'In School' based on the team value
   const getInSchoolDisplay = (teamValue) => {
     switch (teamValue) {
-      case 'NSN':
-        return 'National Support';
       case 'NST':
+        return 'National Support';
+      case 'NSN':
         return 'In School Position';
       default:
         return teamValue; // Default to the original value if it's neither NSN nor NST
