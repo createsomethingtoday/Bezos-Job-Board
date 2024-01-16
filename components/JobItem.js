@@ -22,7 +22,7 @@ function JobItem({ job }) {
       case 'NST':
         return 'National Support';
       case 'NSN':
-        return 'In School Position';
+        return 'In School';
       default:
         return teamValue; // Default to the original value if it's neither NSN nor NST
     }
