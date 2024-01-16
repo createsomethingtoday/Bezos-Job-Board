@@ -47,12 +47,21 @@
   
   @media screen and (max-width: 767px) {
     .c-search-wrapper {
-      grid-column-gap: 10px;
-      grid-row-gap: 10px;
+      flex-direction: column;
     }
   
     .c-search-input {
       background-position: calc(100% - 15px) center; /* Adjust position for smaller screens */
+    }
+
+    .c-search-select {
+      width: 100%;
+      min-height: 40px;
+    }
+
+    .c-search-input {
+      width: 95%;
+      min-height: 40px;
     }
   }
   
@@ -104,10 +113,10 @@
   
 
 .c-search-select {
-height: 40px;
-color: #1c478c;
-background-color: #fff;
-flex: 1;
+  height: 40px;
+  color: #1c478c;
+  background-color: #fff;
+  flex: 1;
 }
 
 .c-search-select:hover {

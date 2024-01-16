@@ -46,6 +46,15 @@ function JobItem({ job }) {
     return title.replace(locationPattern, '');
   };
 
+  // Function to get employment type
+  const getEmploymentType = () => {
+    return job.keyed_custom_fields && job.keyed_custom_fields.employment_type
+           ? job.keyed_custom_fields.employment_type.value
+           : 'N/A';
+  };
+
+  const employmentType = getEmploymentType();
+
   return (
     <a href={job.absolute_url} target="_blank" rel="noopener noreferrer" className={styles['c-board-card']}>
       <div className={styles['c-card-content-wrapper']}>
@@ -53,6 +62,11 @@ function JobItem({ job }) {
         <div className={styles['c-card-details']}>{formatJobTitle(job.title)}</div>
       </div>
 
+      <div className={styles['c-card-content-wrapper']}>
+        <div className={styles['c-card-label']}>Employment Type</div>
+        <div className={styles['c-card-details']}>{employmentType}</div>
+      </div>
+      
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Role Type</div>
         <div className={styles['c-card-details']}>{inSchoolDisplay}</div>

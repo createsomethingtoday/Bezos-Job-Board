@@ -16,6 +16,11 @@ export default function Home() {
   const [offices, setOffices] = useState([]);
   const [employmentTypes, setEmploymentTypes] = useState([]);
   const [supportTypes, setSupportTypes] = useState([]);
+  // New state for selected dropdown values
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedOffice, setSelectedOffice] = useState(null);
+  const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
+  const [selectedSupportType, setSelectedSupportType] = useState(null);
 
   useEffect(() => {
     fetch('/api/greenhouseJobs')
@@ -43,14 +48,6 @@ export default function Home() {
     fetchActiveDepartmentsList().then(setDepartments);
     fetchActiveOfficesList().then(setOffices);
   }, []);
-
-  const handleKeywordFilter = (newKeyword) => {
-    setKeywordFilters(prev => newKeyword ? [...prev, newKeyword] : prev);
-  };
-
-  const removeKeywordFilter = (keywordToRemove) => {
-    setKeywordFilters(prev => prev.filter(keyword => keyword !== keywordToRemove));
-  };
 
   const handleFilterChange = (setter) => (value) => {
     setter(value);
@@ -114,6 +111,60 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [filteredJobs]); // Add any other dependencies that might change the height of the page
 
+  const handleKeywordFilter = (newKeyword) => {
+    setKeywordFilters(prev => newKeyword ? [...prev, newKeyword] : prev);
+  };
+
+  const removeKeywordFilter = (keywordToRemove) => {
+    setKeywordFilters(prev => prev.filter(keyword => keyword !== keywordToRemove));
+  };
+
+  const handleDropdownFilterChange = (filterType) => (value) => {
+    switch(filterType) {
+      case 'department':
+        setDepartmentFilters(value);
+        setSelectedDepartment(value);
+        break;
+      case 'office':
+        setOfficeFilters(value);
+        setSelectedOffice(value);
+        break;
+      case 'employmentType':
+        setEmploymentTypeFilter(value);
+        setSelectedEmploymentType(value);
+        break;
+      case 'supportType':
+        setSupportTypeFilter(value);
+        setSelectedSupportType(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const removeDropdownFilter = (filterType) => {
+    switch(filterType) {
+      case 'department':
+        setDepartmentFilters('');
+        setSelectedDepartment(null);
+        break;
+      case 'office':
+        setOfficeFilters('');
+        setSelectedOffice(null);
+        break;
+      case 'employmentType':
+        setEmploymentTypeFilter('');
+        setSelectedEmploymentType(null);
+        break;
+      case 'supportType':
+        setSupportTypeFilter('');
+        setSelectedSupportType(null);
+        break;
+      default:
+        break;
+    }
+  };
+
 
   return (
     <div>
@@ -122,10 +173,15 @@ export default function Home() {
         supportTypes={supportTypes}
         onKeywordFilterChange={handleKeywordFilter}
         onRemoveKeywordFilter={removeKeywordFilter}
-        onDepartmentFilterChange={handleFilterChange(setDepartmentFilters)}
-        onOfficeFilterChange={handleFilterChange(setOfficeFilters)}
-        onEmploymentTypeFilterChange={handleFilterChange(setEmploymentTypeFilter)}
-        onSupportTypeFilterChange={handleFilterChange(setSupportTypeFilter)}
+        onDepartmentFilterChange={handleDropdownFilterChange('department')}
+        onOfficeFilterChange={handleDropdownFilterChange('office')}
+        onEmploymentTypeFilterChange={handleDropdownFilterChange('employmentType')}
+        onSupportTypeFilterChange={handleDropdownFilterChange('supportType')}
+        removeDropdownFilter={removeDropdownFilter}
+        selectedDepartment={selectedDepartment}
+        selectedOffice={selectedOffice}
+        selectedEmploymentType={selectedEmploymentType}
+        selectedSupportType={selectedSupportType}
         keywordFilters={keywordFilters}
         departments={departments}
         offices={offices}
