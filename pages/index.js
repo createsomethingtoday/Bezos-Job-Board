@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
-import { fetchDepartments, fetchOffices } from '../services/greenhouseApi';
+import { fetchActiveDepartmentsList, fetchActiveOfficesList } from '../services/greenhouseApi';
 
 export default function Home() {
   const [jobs, setJobs] = useState([]);
@@ -40,8 +40,8 @@ export default function Home() {
       })
       .catch(error => console.error('Error fetching jobs:', error));
 
-    fetchDepartments().then(setDepartments);
-    fetchOffices().then(setOffices);
+    fetchActiveDepartmentsList().then(setDepartments);
+    fetchActiveOfficesList().then(setOffices);
   }, []);
 
   const handleKeywordFilter = (newKeyword) => {
