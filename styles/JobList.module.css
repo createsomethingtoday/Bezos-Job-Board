@@ -1,162 +1,12 @@
-/* Next.js Styles */
-
-/* Base Styles */
 .c-board-wrapper {
   padding: 20px;
-  background-color: #f2f4f8; /* Consistent with the filter wrapper background */  
 }
 
-.c-board-card:hover {
-  background-color: #e9ecef; /* Slightly darker background on hover, like filter tags */
-}
-
-.c-board-card.is-tri {
-  grid-template-columns: 1fr 1fr .5fr;
-}
-
-/* Card Components */
-.c-card-title {  
-  margin-bottom: 5px;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #1c478c; /* Adding color to match the filter-tags */
-}  
-
-.c-card-label {
-  margin-bottom: 5px;
-  color: #495057; /* Dark grey text for better contrast */ 
-  font-size: .75rem;   
-}
-
-.c-card-details {
-  font-size: 1rem; /* Slightly smaller font size for a more refined look */
-  font-weight: 700; /* Normal font weight for details */   
-}
-
-/* Buttons */
-.c-card-button {  
-  padding: 0.5rem 1rem;
-  background-color: #1c478c;
-  color: #fff;
-  font-weight: 400;
-  font-family: initial;
-  text-decoration: none;
-  text-transform: none;
-  text-align: center;
-  transition: background-color .3s; /* Transition for a hover effect */  
-}
-
-.c-card-button:hover {
-  background-color: #163a64; /* Darker shade on hover for button */
-}  
-
-.c-card-button.is-with-width {
-  width: 200px;
-  text-align: center;
-}
-
-/* Search and Filter Styles */
-.c-board-search {  
-  padding: 20px;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 20px;
-}
-
-.c-search-wrapper, .c-search-wrapper.is-vertical {
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-  display: flex;  
-}
-
-.c-search-wrapper.is-vertical {
-  flex-direction: column; 
-}
-
-.c-search-input {
-  height: 40px;
-  border-bottom: 1px solid #1c478c;
-  background-image: url('../images/icon-search--blue.svg');
-  background-position: 99%; 
-  background-repeat: no-repeat;
-  background-size: auto 20px;
-  flex: 1;  
-}
-
-.filter-tags {
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-  padding: 10px;
-  display: flex;
-}
-
-.c-search-select, .c-search-select:hover {
-  height: 40px;
-  color: #1c478c;
-  background-color: #fff;
-  flex: 1;  
-}
-
-.c-search-select:hover {
-  background-color: #f5f5f6;  
-}
-
-.c-search-submit {
-  height: 40px;
-  background-color: #1c478c;
-}
-
-/* Component Wrapper Styles */
-.c-component-wrapper {
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-  flex-direction: column;
-  grid-template-rows: auto;
-  grid-template-columns: 3fr 1fr;
-  grid-auto-columns: 1fr;
-  display: grid;  
-}  
-
-/* Other Next.js styles */
-
-
-/* Webflow Styles */
-
-.c-board-card {
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-  color: #333;
-  border-bottom: 1px solid #e7e7e7;
-  grid-template-rows: auto;
-  grid-template-columns: 1.5fr .75fr .5fr .5fr .75fr .75fr;
-  grid-auto-columns: 1fr;
-  padding: 20px;
-  text-decoration: none;
-  transition: background-color .2s;
-  display: grid;
-}
-
-.c-board-card:hover {
-  background-color: #f2f4f8;
-}
-
-.c-card-title {
-  margin-bottom: 5px;
-  font-size: 1.15rem;
-  font-weight: 700;  
-}
-
-.c-card-button {
-  background-color: #1c478c;
-  color: #fff;
-  text-align: center;
-  padding: .75rem 2rem;
-  text-decoration: none;  
-}
-
-.c-card-button.is-with-width {
-  width: 200px;
-  text-align: center;
+.c-board-section-title {
+  border-bottom: 1px solid #b6b6b6;
+  margin-top: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .c-board-title-wrapper {
@@ -171,7 +21,7 @@
   padding-top: 20px;
   padding-bottom: 20px;
   display: flex;
-}  
+}
 
 .c-board-title {
   font-size: 30px;
@@ -179,80 +29,7 @@
   line-height: 1.2;
 }
 
-.c-board-location-total {
-  width: 30px;
-  height: 30px;  
-  background-color: #fb5915;
-  color: #fff;
-  border-radius: 100%;
-  flex: 0 auto;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 700;
-  display: flex;  
-}
-
-.c-board-card-wrapper {
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+.c-board-section-wrapper {
   flex-direction: column;
   display: flex;
 }
-
-.c-board-location-wrapper {
-  grid-column-gap: 60px;
-  grid-row-gap: 60px;
-  flex-direction: column;  
-  display: flex;
-}
-
-.c-dropdown-wrapper {
-  padding-top: 10px; 
-  padding-bottom: 10px;  
-}
-
-.c-dropdown-title {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.2;  
-}  
-
-.c-search-component-wrapper {
-  border-bottom: 1px solid #1a1a1a;
-  padding-bottom: 10px;
-}
-
-/* Other Webflow styles */
-
-
-/* Shared Styles */
-
-.c-search-wrapper {
-  display: flex;  
-}
-
-@media screen and (max-width: 991px) {
-  .c-board-card {
-    flex-direction: column;
-    grid-template-columns: 1.5fr .5fr .5fr 1fr 1fr;
-    display: flex;
-  }
-  
-  .c-component-wrapper {
-    flex-direction: column-reverse;
-    display: flex;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .c-search-wrapper {
-    flex-direction: column;
-  }
-  
-  .c-search-select {
-    flex: none; 
-  } 
-}
-
-/* Other shared responsive styles */

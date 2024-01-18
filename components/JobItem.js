@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/JobList.module.css';
+import styles from '../styles/JobItem.module.css';
 
 function JobItem({ job }) {
 
