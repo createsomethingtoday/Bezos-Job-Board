@@ -11,7 +11,9 @@ function Filter({
     onEmploymentTypeFilterChange, 
     onSupportTypeFilterChange, 
     keywordFilters, 
-    departments, 
+    departments,
+    jobLevels,
+    onJobLevelFilterChange,
     offices 
 }) {
   const [keywordInput, setKeywordInput] = useState('');
@@ -19,12 +21,14 @@ function Filter({
   const [selectedOffice, setSelectedOffice] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState('');
   const [selectedSupportType, setSelectedSupportType] = useState('');
+  const [selectedJobLevel, setSelectedJobLevel] = useState(''); // Added state for selected job level
 
   // Create refs for each dropdown
   const departmentRef = useRef(null);
   const officeRef = useRef(null);
   const employmentTypeRef = useRef(null);
   const supportTypeRef = useRef(null);
+  const jobLevelRef = useRef(null); // Ref for job level dropdown
 
   const handleKeywordChange = (e) => setKeywordInput(e.target.value);
 
@@ -78,6 +82,11 @@ function Filter({
         onSupportTypeFilterChange('');
         if (supportTypeRef.current) supportTypeRef.current.value = '';
         break;
+      case 'jobLevel':
+        setSelectedJobLevel('');
+        onJobLevelFilterChange('');
+        if (jobLevelRef.current) jobLevelRef.current.value = '';
+        break;
       // ... other cases ...
       default:
         break;
@@ -123,14 +132,24 @@ function Filter({
           {supportTypes.map((type, index) => (
             <option key={index} value={type}>{type}</option>
           ))}
-        </select>
+    </select>
+
+    <select 
+  value={selectedJobLevel} 
+  className={styles['c-search-select']} 
+  onChange={createSelectHandler(onJobLevelFilterChange, setSelectedJobLevel)}>
+  <option value="">Select Job Level</option>
+  {jobLevels.map((level, index) => (
+    <option key={index} value={level}>{level}</option>
+  ))}
+</select>
 
         <input className={styles['c-search-input']} type="text" value={keywordInput} onChange={handleKeywordChange} placeholder="Search Keyword" />
         <button className={styles['c-search-submit']} type="submit">Search</button>
       </form>
 
       {/* Update the condition to check for any filters being used */}
-      {(keywordFilters.length > 0 || selectedDepartment || selectedOffice || selectedEmploymentType || selectedSupportType) && (
+      {(keywordFilters.length > 0 || selectedDepartment || selectedOffice || selectedEmploymentType || selectedSupportType || selectedJobLevel) && (
         <div className={styles['filter-tag-wrapper']}>
         {keywordFilters.map((filter, index) => (
             <span key={index} className={styles['filter-tag']}>
@@ -162,6 +181,14 @@ function Filter({
       <button onClick={() => removeFilter('employmentType')}>X</button>
     </span>
   )}
+
+{selectedJobLevel && (
+    <span className={styles['filter-tag']}>
+      Level: {selectedJobLevel}
+      <button onClick={() => removeFilter('jobLevel')}>X</button>
+    </span>
+  )
+}
 
   {/* Include a tag for selectedSupportType if it's set */}
   {selectedSupportType && (

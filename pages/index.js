@@ -22,6 +22,8 @@ export default function Home() {
   const [selectedOffice, setSelectedOffice] = useState(null);
   const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
   const [selectedSupportType, setSelectedSupportType] = useState(null);
+  const [jobLevelFilter, setJobLevelFilter] = useState(''); // Added job level filter state
+  const [jobLevels, setJobLevels] = useState([]); // State to hold unique job levels
 
   useEffect(() => {
     fetch('/api/greenhouseJobs')
@@ -29,9 +31,11 @@ export default function Home() {
       .then(data => {
         setJobs(data);
         setFilteredJobs(data);
-
+  
         const uniqueTypes = new Set();
         const uniqueSupportTypes = new Set();
+        let jobLevels = new Set(); // Use Set to ensure uniqueness
+  
         data.forEach(job => {
           if (job.keyed_custom_fields?.employment_type?.value) {
             uniqueTypes.add(job.keyed_custom_fields.employment_type.value);
@@ -40,16 +44,28 @@ export default function Home() {
             const displayType = getInSchoolDisplay(job.keyed_custom_fields.team.value);
             uniqueSupportTypes.add(displayType);
           }
+          // Check if position_level_range exists and has a value array
+        if (job.keyed_custom_fields?.position_level_range?.value && Array.isArray(job.keyed_custom_fields.position_level_range.value)) {
+          // Assume the first element of the array is the level and add it to the Set
+          jobLevels.add(job.keyed_custom_fields.position_level_range.value[0]);
+        }
         });
+
+       // Convert Set to Array and sort numerically
+      jobLevels = Array.from(jobLevels).sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+
+      setJobLevels(jobLevels);
+  
         setEmploymentTypes([...uniqueTypes]);
         setSupportTypes([...uniqueSupportTypes]);
+        setJobLevels([...uniqueJobLevels]); // Convert Set to Array and set state
       })
       .catch(error => console.error('Error fetching jobs:', error));
-
+  
     fetchActiveDepartmentsList().then(setDepartments);
     fetchActiveOfficesList().then(setOffices);
   }, []);
-
+  
   const handleFilterChange = (setter) => (value) => {
     setter(value);
   };
@@ -69,12 +85,14 @@ export default function Home() {
       const officeMatch = !officeFilters || job.offices?.some(office => `${office.id}` === officeFilters);
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
       const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
+      const jobLevelMatch = !jobLevelFilter || 
+      (job.keyed_custom_fields?.position_level_range?.value.includes(jobLevelFilter));
 
-      return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch;
-    });
+      return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch && jobLevelMatch;
+  });
 
-    setFilteredJobs(filtered);
-  }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
+  setFilteredJobs(filtered);
+}, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobLevelFilter, jobs]);
 
   const router = useRouter();
   const contentRef = useRef();
@@ -140,6 +158,9 @@ export default function Home() {
         break;
       default:
         break;
+        case 'jobLevel':
+      setJobLevelFilter(value);
+      break;
     }
   };
 
@@ -163,6 +184,10 @@ export default function Home() {
         break;
       default:
         break;
+        case 'jobLevel':
+    setSelectedJobLevel('');
+    onJobLevelFilterChange(''); // Resetting the job level filter
+    break;
     }
   };
 
@@ -178,6 +203,7 @@ export default function Home() {
         onOfficeFilterChange={handleDropdownFilterChange('office')}
         onEmploymentTypeFilterChange={handleDropdownFilterChange('employmentType')}
         onSupportTypeFilterChange={handleDropdownFilterChange('supportType')}
+        onJobLevelFilterChange={handleDropdownFilterChange('jobLevel')} // Make sure this prop is correctly passed
         removeDropdownFilter={removeDropdownFilter}
         selectedDepartment={selectedDepartment}
         selectedOffice={selectedOffice}
@@ -186,6 +212,7 @@ export default function Home() {
         keywordFilters={keywordFilters}
         departments={departments}
         offices={offices}
+        jobLevels={jobLevels}
       />
       <p><span>{filteredJobs.length}</span> of <span>{jobs.length}</span> jobs</p>
       <JobList jobs={filteredJobs} />
