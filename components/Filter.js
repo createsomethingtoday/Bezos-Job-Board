@@ -93,6 +93,18 @@ function Filter({
     }
   };
 
+  // Function to map job levels to a label
+  const labelToJobLevels = {
+    'Entry level': ['3'],
+    'Associate': ['4'],
+    'Mid-senior level': ['5', '6'],
+    'Director': ['7'],
+    'Executive': ['8', '9', '10']
+  };
+
+  // Convert the label to job levels map to an array for the dropdown
+  const jobLevelOptions = Object.entries(labelToJobLevels).map(([label, _]) => label);
+
   return (
     <div className={styles['filter-container']}>
       <form className={styles['c-search-wrapper']} onSubmit={handleSubmit}>
@@ -139,8 +151,8 @@ function Filter({
   className={styles['c-search-select']} 
   onChange={createSelectHandler(onJobLevelFilterChange, setSelectedJobLevel)}>
   <option value="">Select Job Level</option>
-  {jobLevels.map((level, index) => (
-    <option key={index} value={level}>{level}</option>
+  {jobLevelOptions.map((label, index) => (
+    <option key={index} value={label}>{label}</option>
   ))}
 </select>
 
@@ -183,12 +195,11 @@ function Filter({
   )}
 
 {selectedJobLevel && (
-    <span className={styles['filter-tag']}>
-      Level: {selectedJobLevel}
-      <button onClick={() => removeFilter('jobLevel')}>X</button>
-    </span>
-  )
-}
+  <span className={styles['filter-tag']}>
+    Level: {selectedJobLevel} {/* Use the selectedJobLevel directly as it's already the label */}
+    <button onClick={() => removeFilter('jobLevel')}>X</button>
+  </span>
+)}
 
   {/* Include a tag for selectedSupportType if it's set */}
   {selectedSupportType && (

@@ -70,6 +70,15 @@ export default function Home() {
     setter(value);
   };
 
+  // Map job level labels to numeric values
+  const labelToJobLevels = {
+    'Entry level': ['3'],
+    'Associate': ['4'],
+    'Mid-senior level': ['5', '6'],
+    'Director': ['7'],
+    'Executive': ['8', '9', '10']
+  };
+
   const getInSchoolDisplay = (teamValue) => {
     switch (teamValue) {
       case 'NST': return 'National Support';
@@ -85,15 +94,17 @@ export default function Home() {
       const officeMatch = !officeFilters || job.offices?.some(office => `${office.id}` === officeFilters);
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
       const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
+      // Update the job level match check
       const jobLevelMatch = !jobLevelFilter || 
-      (job.keyed_custom_fields?.position_level_range?.value.includes(jobLevelFilter));
+        labelToJobLevels[jobLevelFilter].includes(job.keyed_custom_fields?.position_level_range?.value[0]);
 
       return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch && jobLevelMatch;
-  });
+    });
 
-  setFilteredJobs(filtered);
-  postHeightToParent();
-}, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobLevelFilter, jobLevelFilter, jobs, filteredJobs]);
+    setFilteredJobs(filtered);
+    postHeightToParent();
+  }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobLevelFilter, jobs]);
+
 
   const router = useRouter();
   const contentRef = useRef();
@@ -132,6 +143,16 @@ export default function Home() {
   
     return () => clearInterval(interval);
   }, []);
+
+  // Function to handle changes in the job level dropdown
+  const handleJobLevelFilterChange = (selectedLabel) => {
+    setJobLevelFilter(selectedLabel);
+  };
+
+  // Function to remove job level filter
+  const removeJobLevelFilter = () => {
+    setJobLevelFilter('');
+  };
   
 
   const handleKeywordFilter = (newKeyword) => {
@@ -207,7 +228,7 @@ export default function Home() {
         onOfficeFilterChange={handleDropdownFilterChange('office')}
         onEmploymentTypeFilterChange={handleDropdownFilterChange('employmentType')}
         onSupportTypeFilterChange={handleDropdownFilterChange('supportType')}
-        onJobLevelFilterChange={handleDropdownFilterChange('jobLevel')} // Make sure this prop is correctly passed
+        onJobLevelFilterChange={handleJobLevelFilterChange} // Updated to use the dedicated handler
         removeDropdownFilter={removeDropdownFilter}
         selectedDepartment={selectedDepartment}
         selectedOffice={selectedOffice}
@@ -216,7 +237,7 @@ export default function Home() {
         keywordFilters={keywordFilters}
         departments={departments}
         offices={offices}
-        jobLevels={jobLevels}
+        jobLevels={jobLevels.map(level => labelToJobLevels[level] || level)} // Mapping the numeric levels to labels
       />
       <p><span>{filteredJobs.length}</span> of <span>{jobs.length}</span> jobs</p>
       <JobList jobs={filteredJobs} />
