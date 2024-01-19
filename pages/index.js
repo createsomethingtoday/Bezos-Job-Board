@@ -101,7 +101,7 @@ export default function Home() {
   // Function to post height to the parent window
   const postHeightToParent = () => {
     if (window.parent && window.document.body) {
-      const height = document.documentElement.scrollHeight;
+      const height = document.body.scrollHeight;
       window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/');
     }
   };
@@ -120,10 +120,10 @@ export default function Home() {
 
   // Post height after rendering and periodically check for changes
   useEffect(() => {
-    let lastHeight = document.documentElement.scrollHeight;
+    let lastHeight = document.body.scrollHeight;
   
     const interval = setInterval(() => {
-      const currentHeight = document.documentElement.scrollHeight;
+      const currentHeight = document.body.scrollHeight;
       if (currentHeight !== lastHeight) {
         postHeightToParent();
         lastHeight = currentHeight;
@@ -146,6 +146,25 @@ export default function Home() {
       if (contentRef.current) {
         resizeObserver.unobserve(contentRef.current);
       }
+    };
+  }, []);
+
+  // MutationObserver to observe changes in the DOM
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      postHeightToParent();
+    });
+
+    if (contentRef.current) {
+      observer.observe(contentRef.current, { 
+        childList: true, 
+        subtree: true, 
+        attributes: true 
+      });
+    }
+
+    return () => {
+      observer.disconnect();
     };
   }, []);
   
