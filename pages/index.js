@@ -92,15 +92,16 @@ export default function Home() {
   });
 
   setFilteredJobs(filtered);
-}, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobLevelFilter, jobs]);
+  postHeightToParent();
+}, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobLevelFilter, jobLevelFilter, jobs, filteredJobs]);
 
   const router = useRouter();
   const contentRef = useRef();
 
   // Function to post height to the parent window
   const postHeightToParent = () => {
-    if (window.parent && window.document.body) {
-      const height = document.documentElement.scrollHeight;
+    if (window.parent && contentRef.current) {
+      const height = contentRef.current.scrollHeight;
       window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/');
     }
   };
