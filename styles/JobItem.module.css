@@ -19,12 +19,10 @@
     margin-bottom: 5px;
     font-size: 1.15rem;
     font-weight: 700;
-    color: #1c478c; /* Adding color to match the filter-tags */
   }  
   
   .c-card-label {
     margin-bottom: 5px;
-    color: #495057; /* Dark grey text for better contrast */ 
     font-size: .75rem;   
   }
   
@@ -92,7 +90,6 @@
   
   .c-search-select, .c-search-select:hover {
     height: 40px;
-    color: #1c478c;
     background-color: #fff;
     flex: 1;  
   }
@@ -125,7 +122,7 @@
   .c-board-card {
     grid-column-gap: 16px;
     grid-row-gap: 16px;
-    color: #333;
+    color: #1c478c;
     border-bottom: 1px solid #e7e7e7;
     grid-template-rows: auto;
     grid-template-columns: 1.5fr .75fr .5fr .5fr .75fr .75fr;
@@ -262,11 +259,9 @@
   
   .c-card-title {
     font-size: 1.2rem;
-    color: #333;
   }
   
   .c-card-details {
-    color: #555;
     font-size: 1rem;
   }
   
