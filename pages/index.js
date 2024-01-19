@@ -119,16 +119,35 @@ export default function Home() {
 
   // Post height after rendering and periodically check for changes
   useEffect(() => {
-    postHeightToParent();
-
+    let lastHeight = document.documentElement.scrollHeight;
+  
     const interval = setInterval(() => {
-      if (contentRef.current && contentRef.current.scrollHeight !== document.documentElement.scrollHeight) {
+      const currentHeight = document.documentElement.scrollHeight;
+      if (currentHeight !== lastHeight) {
         postHeightToParent();
+        lastHeight = currentHeight;
       }
-    }, 1000); // Adjust interval timing as needed
-
+    }, 1000);
+  
     return () => clearInterval(interval);
-  }, [filteredJobs]); // Add any other dependencies that might change the height of the page
+  }, []);
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      postHeightToParent();
+    });
+  
+    if (contentRef.current) {
+      resizeObserver.observe(contentRef.current);
+    }
+  
+    return () => {
+      if (contentRef.current) {
+        resizeObserver.unobserve(contentRef.current);
+      }
+    };
+  }, []);
+  
 
   const handleKeywordFilter = (newKeyword) => {
     setKeywordFilters(prev => newKeyword ? [...prev, newKeyword] : prev);
