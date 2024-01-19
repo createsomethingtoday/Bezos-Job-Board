@@ -29,12 +29,17 @@ function JobList({ jobs }) {
   const sortedCityOrLabels = Object.keys(groupedJobs).sort();
 
   return (
-    <div className={styles['c-board-wrapper']}>
+    <div className={styles['c-board-section']}>
       {sortedCityOrLabels.map(cityOrLabel => (
-        <div key={cityOrLabel} className={styles['c-board-section-wrapper']}>
+        <div key={cityOrLabel} className={styles['c-board-card-wrapper']}>
           {/* Apply the title wrapper class directly to the h3 element */}
-          <h3 className={styles['c-board-title-wrapper']}>{cityOrLabel}</h3>
-          <div className={styles['c-board-card-wrapper']}>
+          <div className={styles['c-board-title-wrapper']}>
+            <h3 className={styles['c-board-section-title']}>{cityOrLabel}</h3>
+            <div className={styles['c-title-count']}>
+              {groupedJobs[cityOrLabel].length}
+            </div>
+          </div>
+          <div>
             {groupedJobs[cityOrLabel].map((job, index) => (
               <JobItem key={index} job={job} />
             ))}
