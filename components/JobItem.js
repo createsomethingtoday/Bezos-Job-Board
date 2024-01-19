@@ -53,33 +53,6 @@ function JobItem({ job }) {
            : 'N/A';
   };
 
-  // Function to map job level to descriptive label
-  const mapJobLevelToLabel = (level) => {
-    switch(level) {
-      case '3': return 'Entry level';
-      case '4': return 'Associate';
-      case '5': 
-      case '6': return 'Mid-senior level';
-      case '7': return 'Director';
-      case '8': 
-      case '9': 
-      case '10': return 'Executive';
-      default: return 'N/A';
-    }
-  };
-
-  // Function to get job level label
-  const getJobLevelLabel = () => {
-    // Extract the first element from the array
-    const levelArray = job.keyed_custom_fields && job.keyed_custom_fields.position_level_range
-                      ? job.keyed_custom_fields.position_level_range.value
-                      : ['N/A'];
-    const level = levelArray[0]; // Assuming the array always contains at least one element
-    return mapJobLevelToLabel(level);
-  };
-
-  const jobLevelLabel = getJobLevelLabel();
-
   const employmentType = getEmploymentType();
 
   return (
@@ -107,11 +80,6 @@ function JobItem({ job }) {
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Location</div>
         <div className={styles['c-card-details']}>{formatLocation(job.location.name)}</div>  
-      </div>
-
-      <div className={styles['c-card-content-wrapper']}>
-        <div className={styles['c-card-label']}>Job Level</div>
-        <div className={styles['c-card-details']}>{jobLevelLabel}</div>
       </div>
 
       <div className={`${styles['c-card-content-wrapper']} ${styles['button-grid-wrapper']}`}>
