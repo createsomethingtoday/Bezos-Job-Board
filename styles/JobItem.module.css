@@ -159,7 +159,7 @@
   .c-board-title-wrapper {
     grid-column-gap: 16px;
     grid-row-gap: 16px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid #1c478c;
     flex-direction: row;
     grid-template-rows: auto auto;
     grid-template-columns: 1fr 1fr;
