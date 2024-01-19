@@ -1,7 +1,16 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Medium.ttf') format('ttf'),
+       url('/fonts/Montserrat-Black.ttf') format('ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
 body {
   overflow: hidden;
   padding: 20px 0;
   margin: 0;
   color: #1c478c;
   font-family: inherit;
+  font-family: 'Montserrat', sans-serif;
 }
