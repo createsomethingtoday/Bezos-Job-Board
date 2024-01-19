@@ -16,8 +16,8 @@
 
 .c-card-title {
   margin-bottom: 5px;
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .c-card-label {
@@ -25,8 +25,8 @@
 }
 
 .c-card-details {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 #w-node-_1bdff300-783f-00a9-dcbd-ba1fa2eda93a-af668cd5, #w-node-e4eaf054-928e-5dc5-3241-aa72798f16a5-af668cd5, #w-node-b4e775ad-5ef1-f24e-6dc2-8aa97497f205-af668cd5 {

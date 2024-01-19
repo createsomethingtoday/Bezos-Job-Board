@@ -17,8 +17,8 @@
   /* Card Components */
   .c-card-title {  
     margin-bottom: 5px;
-    font-size: 1.15rem;
-    font-weight: 700;
+    font-size: 1;
+    font-weight: bold;
   }  
   
   .c-card-label {
@@ -28,7 +28,7 @@
   
   .c-card-details {
     font-size: 1rem; /* Slightly smaller font size for a more refined look */
-    font-weight: 700; /* Normal font weight for details */   
+    font-weight: bold; /* Normal font weight for details */   
   }
   
   /* Buttons */
@@ -37,7 +37,6 @@
     background-color: #1c478c;
     color: #fff;
     font-weight: 400;
-    font-family: initial;
     text-decoration: none;
     text-transform: none;
     text-align: center;
