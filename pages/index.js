@@ -100,8 +100,8 @@ export default function Home() {
 
   // Function to post height to the parent window
   const postHeightToParent = () => {
-    if (window.parent && contentRef.current) {
-      const height = contentRef.current.scrollHeight;
+    if (window.parent && window.document.body) {
+      const height = document.documentElement.scrollHeight;
       window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/');
     }
   };
