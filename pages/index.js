@@ -132,41 +132,6 @@ export default function Home() {
   
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver(() => {
-      postHeightToParent();
-    });
-  
-    if (contentRef.current) {
-      resizeObserver.observe(contentRef.current);
-    }
-  
-    return () => {
-      if (contentRef.current) {
-        resizeObserver.unobserve(contentRef.current);
-      }
-    };
-  }, []);
-
-  // MutationObserver to observe changes in the DOM
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      postHeightToParent();
-    });
-
-    if (contentRef.current) {
-      observer.observe(contentRef.current, { 
-        childList: true, 
-        subtree: true, 
-        attributes: true 
-      });
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
   
 
   const handleKeywordFilter = (newKeyword) => {
