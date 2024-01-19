@@ -7,8 +7,8 @@
   }
   
   .c-search-wrapper {
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
     display: flex;
     align-items: center; /* Align items for a cleaner look */
   }
@@ -71,7 +71,7 @@
     flex-wrap: wrap;
     gap: 8px;
     padding: 10px;
-    background-color: #f2f4f8; /* A light grey background for the tag wrapper */
+    background-color: #E4F1F4; /* A light grey background for the tag wrapper */
     border-radius: 6px; /* Slightly rounded corners for the wrapper */
     margin-top: 10px; /* Space above the tag wrapper */
   }

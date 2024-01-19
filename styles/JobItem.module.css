@@ -61,8 +61,8 @@
   }
   
   .c-search-wrapper, .c-search-wrapper.is-vertical {
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
     display: flex;  
   }
   

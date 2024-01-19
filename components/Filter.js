@@ -12,7 +12,6 @@ function Filter({
     onSupportTypeFilterChange, 
     keywordFilters, 
     departments,
-    jobLevels,
     onJobLevelFilterChange,
     offices 
 }) {
