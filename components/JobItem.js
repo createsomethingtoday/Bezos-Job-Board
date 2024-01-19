@@ -53,7 +53,15 @@ function JobItem({ job }) {
            : 'N/A';
   };
 
+  // Function to get employment type
+  const getJobLevel = () => {
+    return job.keyed_custom_fields && job.keyed_custom_fields.position_level_range
+           ? job.keyed_custom_fields.position_level_range.value
+           : 'N/A';
+  };
+
   const employmentType = getEmploymentType();
+  const jobLevel = getJobLevel();
 
   return (
     <a href={job.absolute_url} target="_blank" rel="noopener noreferrer" className={styles['c-board-card']}>
@@ -80,6 +88,11 @@ function JobItem({ job }) {
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Location</div>
         <div className={styles['c-card-details']}>{formatLocation(job.location.name)}</div>  
+      </div>
+
+      <div className={styles['c-card-content-wrapper']}>
+        <div className={styles['c-card-label']}>Job Level</div>
+        <div className={styles['c-card-details']}>{jobLevel}</div>
       </div>
 
       <div className={`${styles['c-card-content-wrapper']} ${styles['button-grid-wrapper']}`}>
