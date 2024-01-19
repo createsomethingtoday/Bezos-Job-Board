@@ -12,7 +12,7 @@
   .c-board-card.is-tri {
     grid-template-columns: 1fr 1fr .5fr;
   }
-  
+
   /* Card Components */
   .c-card-title {  
     margin-bottom: 5px;
@@ -33,10 +33,10 @@
   /* Buttons */
   .c-card-button {  
     padding: 0.5rem 1rem;
-    background-color: #1c478c;
+    background-color: #fc5914;
     color: #fff;
-    font-weight: 400;
-    border-radius: 20px;
+    font-weight: 800;
+    border-radius: 30px;
     text-decoration: none;
     text-transform: none;
     text-align: center;
@@ -44,7 +44,7 @@
   }
   
   .c-card-button:hover {
-    background-color: #163a64; /* Darker shade on hover for button */
+    background-color: #da4303; /* Darker shade on hover for button */
   }  
   
   .c-card-button.is-with-width {
@@ -140,14 +140,6 @@
     margin-bottom: 5px;
     font-size: 1.15rem;
     font-weight: 700;  
-  }
-  
-  .c-card-button {
-    background-color: #1c478c;
-    color: #fff;
-    text-align: center;
-    padding: .75rem 2rem;
-    text-decoration: none;  
   }
   
   .c-card-button.is-with-width {
@@ -267,10 +259,7 @@
   .c-card-button {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
-  
-  .c-card-button:hover {
-    background-color: #00397a;
-  }
+
   
   /* Responsive typography */
   @media screen and (max-width: 767px) {
