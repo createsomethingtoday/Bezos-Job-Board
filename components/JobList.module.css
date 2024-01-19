@@ -5,6 +5,20 @@
     display: flex;
   }
 
+  .c-board-section {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    flex-direction: column;
+    display: flex;
+  }
+
+  .c-board-card-wrapper {
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    flex-flow: column wrap;
+    display: flex;
+  }
+
   .c-board-section-title {
     margin-top: 0;
     margin-bottom: 0;
