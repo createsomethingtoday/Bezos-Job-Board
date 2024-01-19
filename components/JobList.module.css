@@ -13,8 +13,8 @@
   }
 
   .c-board-title-wrapper {
-    grid-column-gap: 3px;
-    grid-row-gap: 3px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
     border-bottom: 1px solid #1c478c;
     flex-direction: row;
     grid-template-rows: auto auto;
@@ -41,7 +41,7 @@
     width: 3px;
     height: 3px;
     color: #f1f1f1;
-    background-color: #fc5914;
+    background-color: #1c478c;
     border-radius: 100%;
     flex-direction: column;
     justify-content: center;
