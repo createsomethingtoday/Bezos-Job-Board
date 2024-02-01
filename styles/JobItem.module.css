@@ -133,7 +133,7 @@
     color: #1c478c;
     border-bottom: 1px solid #e7e7e7;
     grid-template-rows: auto;
-    grid-template-columns: 1.5fr .75fr .5fr .5fr 1fr .5fr;
+    grid-template-columns: 1.5fr .75fr .75fr .5fr 1fr .5fr;
     grid-auto-columns: 1fr;
     padding: 20px;
     text-decoration: none;
