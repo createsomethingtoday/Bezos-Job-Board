@@ -9,37 +9,57 @@
   grid-column-gap: 3px;
   grid-row-gap: 3px;
   border-bottom: 1px solid #b6b6b6;
-  flex-direction: row;
-  grid-template-rows: auto auto;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-columns: 1fr;
+  display: flex;
   align-items: center;
+  justify-content: space-between; /* Ensure proper spacing and alignment */
   padding-top: 10px;
   padding-bottom: 10px;
-  display: flex;
 }
 
 .c-board-title {
   font-size: 30px;
   font-weight: 700;
   line-height: 1.2;
+  color: #1c478c; /* Ensure title color is consistent with design */
 }
 
 .c-board-section-wrapper {
-  flex-direction: column;
   display: flex;
+  flex-direction: column;
+  padding: 20px 0; /* Add padding for spacing around section content */
 }
 
 .c-board-location-total {
   width: 30px;
   height: 30px;
-  background-color: var(--highlight);
+  background-color: var(--highlight, #007bff); /* Use CSS variable for theme consistency */
   color: #fff;
   border-radius: 100%;
-  flex: 0 auto;
+  display: flex;
   justify-content: center;
   align-items: center;
   font-size: 12px;
   font-weight: 700;
-  display: flex;
+}
+
+@media screen and (max-width: 991px) {
+  .c-board-title {
+    font-size: 24px; /* Slightly reduce font size for medium screens */
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .c-board-title-wrapper {
+    flex-direction: column; /* Stack elements vertically on small screens */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .c-board-section-title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .c-board-location-total {
+    align-self: center; /* Center location total on small screens */
+  }
 }
