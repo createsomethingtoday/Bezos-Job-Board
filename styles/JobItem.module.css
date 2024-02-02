@@ -40,7 +40,7 @@
     text-align: center;
     transition: background-color .3s; /* Transition for a hover effect */  
     font-weight: 800;
-    padding: 0px 20px;
+    padding: 0px 30px;
     height: 40px;
     border-radius: 20px;
     font-size: 14px;
@@ -132,7 +132,7 @@
     color: #1c478c;
     border-bottom: 1px solid #e7e7e7;
     grid-template-rows: auto;
-    grid-template-columns: 1.5fr .75fr .75fr .5fr 1fr .5fr;
+    grid-template-columns: 1.5fr .75fr .75fr .5fr 1fr .75fr;
     grid-auto-columns: 1fr;
     padding: 20px;
     text-decoration: none;
