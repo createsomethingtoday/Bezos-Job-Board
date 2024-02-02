@@ -87,12 +87,19 @@ export default function Home() {
   const contentRef = useRef();
 
   // Function to post height to the parent window
-  const postHeightToParent = () => {
-    if (window.parent && window.document.body) {
-      const height = document.body.scrollHeight;
-      window.parent.postMessage({ height: height }, 'https://bezosacademstg.wpengine.com/');
-    }
-  };
+const postHeightToParent = () => {
+  if (window.parent && window.document.body) {
+    const height = document.body.scrollHeight;
+    const allowedDomains = [
+      'https://bezosacademy.org/',
+      'https://bezosacademystg.wpengine.com/'
+    ];
+    
+    allowedDomains.forEach(domain => {
+      window.parent.postMessage({ height: height }, domain);
+    });
+  }
+};
 
   // Post height on route change complete
   useEffect(() => {
