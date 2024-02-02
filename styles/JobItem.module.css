@@ -231,7 +231,7 @@
   @media screen and (max-width: 991px) {
     .c-board-card {
       flex-direction: column;
-      grid-template-columns: 1.5fr .5fr .5fr 1fr 1fr;
+      grid-template-columns: 1fr .5fr .5fr 1fr 1fr;
       display: flex;
       border: 1px solid #cbcbcb;
       margin-left: 10px;
