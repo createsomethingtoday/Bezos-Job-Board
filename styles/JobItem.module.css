@@ -32,7 +32,6 @@
   
   /* Buttons */
   .c-card-button {  
-    padding: 0.5rem 1rem;
     background-color: #fc5914;
     color: #fff;
     font-weight: 800;
@@ -41,7 +40,7 @@
     text-align: center;
     transition: background-color .3s; /* Transition for a hover effect */  
     font-weight: 800;
-    padding: 0px 30px;
+    padding: 0px 20px;
     height: 40px;
     border-radius: 20px;
     font-size: 14px;
