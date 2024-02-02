@@ -26,6 +26,8 @@
   font-size: 1rem; /* Font size that matches the overall design */
   color: #495057; /* Color consistent with the tags */
   font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: .1px;
 }
 
 /* Add focus style for input to improve UX */
@@ -125,6 +127,8 @@
   -webkit-appearance: none; 
   -moz-appearance: none;
   appearance: none;
+  line-height: 1.5;
+  letter-spacing: .1px;
 }
 
 .c-search-select:hover {
