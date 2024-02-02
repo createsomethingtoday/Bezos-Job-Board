@@ -49,6 +49,7 @@
 @media screen and (max-width: 767px) {
   .c-search-wrapper {
     flex-direction: column;
+    padding: 1px;
   }
 
   .c-search-input {

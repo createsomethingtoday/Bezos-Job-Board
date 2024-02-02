@@ -52,6 +52,7 @@
   .c-board-title-wrapper {
     flex-direction: column; /* Stack elements vertically on small screens */
     align-items: flex-start; /* Align items to the start */
+    display: none !important;
   }
 
   .c-board-section-title {

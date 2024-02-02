@@ -239,6 +239,11 @@
       margin-top: 10px;
       align-items: center;
       text-align: center;
+      box-shadow: 0 4px 8px 2px rgba(178,178,178,.25);
+    }
+
+    .c-board-title-wrapper {
+      display: none;
     }
     
     .c-component-wrapper {
