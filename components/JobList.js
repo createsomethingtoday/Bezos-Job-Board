@@ -32,6 +32,7 @@ function JobList({ jobs }) {
           <div key={stateOrLabel} className={styles['c-board-card-wrapper']}>
             <div className={styles['c-board-title-wrapper']}>
               <h3 className={styles['c-board-section-title']}>{stateOrLabel}</h3>
+              <div className={styles['c-title-count']}>({groupedJobs[stateOrLabel].length})</div>
             </div>
             <div>
               {groupedJobs[stateOrLabel].map((job, index) => (

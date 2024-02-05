@@ -44,14 +44,10 @@
   .c-title-count {
     width: 3px;
     height: 3px;
-    color: #f1f1f1;
-    background-color: #1c478c;
-    border-radius: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 10px;
-    font-size: 12px;
     line-height: 1;
     display: flex;
   }
