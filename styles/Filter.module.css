@@ -10,7 +10,7 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   display: flex;
-  align-items: center; /* Align items for a cleaner look */
+  align-items: top; /* Align items for a cleaner look */
 }
 
 .c-search-input {
@@ -133,7 +133,7 @@
 }
 
 .basic-multi-select {
-  height: 40px;
+  height: 36px;
   width: 100%; /* Ensure the select takes the full width of its parent */
   min-width: 175px; /* Or any specific width you prefer */
   color: #1c478c;
