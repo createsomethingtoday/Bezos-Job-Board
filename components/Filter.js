@@ -135,7 +135,7 @@ const employmentTypeOptions = employmentTypes.map(type => ({ value: type, label:
           classNamePrefix="select"
           onChange={selectedOptions => handleOfficeChange(selectedOptions)}
           styles={customSelectStyles}
-          placeholder="Select Role"
+          placeholder="Select Location"
           value={selectedOffice} // Ensure this is updated to handle an array of selected values
         />
 
