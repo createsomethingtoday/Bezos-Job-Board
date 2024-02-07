@@ -46,6 +46,12 @@
   .c-search-input {
     padding: 0 15px;
   }
+
+  .c-search-select {
+    width: 100%;
+    min-height: 40px;
+    display: none;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -56,12 +62,6 @@
 
   .c-search-input {
     background-position: calc(100% - 15px) center; /* Adjust position for smaller screens */
-  }
-
-  .c-search-select {
-    width: 100%;
-    min-height: 40px;
-    display: none;
   }
 
   .c-search-input {
