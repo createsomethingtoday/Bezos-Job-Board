@@ -132,7 +132,7 @@ function Filter({
         }}
         options={departments.map(dept => ({ value: dept.id, label: dept.name }))}
         isClearable={true}
-        placeholder="Select Department"
+        placeholder="Department"
         classNamePrefix="select"
         styles={customSelectStyles}
       />
@@ -146,7 +146,7 @@ function Filter({
           classNamePrefix="select"
           onChange={selectedOptions => handleOfficeChange(selectedOptions)}
           styles={customSelectStyles}
-          placeholder="Select Location"
+          placeholder="Location"
           value={selectedOffice} // Ensure this is updated to handle an array of selected values
         />
 
@@ -159,7 +159,7 @@ function Filter({
           }}
           options={employmentTypeOptions}
           isClearable={true} // Allows clearing the selection
-          placeholder="Select Employment"
+          placeholder="Employment Type"
           classNamePrefix="select"
           styles={customSelectStyles}
         />
@@ -174,7 +174,7 @@ function Filter({
           }}
           options={supportTypeOptions}
           isClearable={true}
-          placeholder="Select Role Type"
+          placeholder="Role Type"
           classNamePrefix="select"
           styles={customSelectStyles}
         />
