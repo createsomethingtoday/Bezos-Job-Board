@@ -126,8 +126,9 @@ function Filter({
         className={styles['basic-multi-select']}
         value={selectedDepartment}
         onChange={(option) => {
-          setSelectedDepartment(option); // Update state with selected option
-          onDepartmentFilterChange(option ? option.value : ''); // Call filter function with department ID
+          console.log("Selected Department ID: ", option ? option.value : "No selection");
+          setSelectedDepartment(option); // Update state with the selected option object
+          onDepartmentFilterChange(option ? option.value : ''); // Use department ID for filtering
         }}
         options={departments.map(dept => ({ value: dept.id, label: dept.name }))}
         isClearable={true}
