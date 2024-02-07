@@ -136,6 +136,10 @@
 background-color: #f5f5f6;
 }
 
+.c-search-select:focus-visible {
+  outline-color: #1c478c;
+}
+
 .c-search-submit {
 height: 40px;
 background-color: #fb5915;
