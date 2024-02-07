@@ -70,30 +70,48 @@ export const fetchActiveDepartmentsList = async () => {
   }
 };
 
-
-
 /**
- * Fetches a list of offices (locations) with active job openings from the Greenhouse API.
+ * Fetches active locations and separates the state and city for dropdown usage.
  */
-export const fetchActiveOfficesList = async () => {
+export const fetchActiveLocationsForDropdown = async () => {
+  const url = 'https://boards-api.greenhouse.io/v1/boards/day1academies/jobs';
   try {
-    const response = await fetch(`${BASE_URL}/offices?render_as=list`);
+    const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`);
+      throw new Error('Failed to fetch jobs data');
     }
-    const officesData = await response.json();
+    const { jobs } = await response.json();
 
-    // Filter offices that have active jobs in any of their departments
-    const activeOffices = officesData.offices.filter(office =>
-      office.departments.some(department => department.jobs && department.jobs.length > 0)
-    );
+    const locationMap = jobs.reduce((acc, job) => {
+      const { name } = job.location || {};
+      if (!name || name === 'Remote') return acc; // Skip if location is 'Remote' or not provided
 
-    return activeOffices;
+      const [city, state] = name.split(', ');
+      if (!state || !city) return acc; // Skip if state or city is not parsed correctly
 
+      if (!acc[state]) acc[state] = [];
+      if (!acc[state].includes(city)) acc[state].push(city);
+
+      return acc;
+    }, {});
+
+    const formattedData = Object.keys(locationMap).map(state => ({
+      label: state,
+      options: locationMap[state].map(city => ({ value: city, label: city }))
+    }));
+
+    return formattedData;
   } catch (error) {
-    console.error('There was a problem with the fetch operation:', error);
+    console.error('There was an error fetching the job locations:', error);
     throw error;
   }
 };
 
-
+export const getDepartments = () => {
+  return fetch(`${BASE_URL}/departments`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then(res => res.json())
+    .then(data => data.map(dept => ({ value: dept.id, label: dept.name })));
+};

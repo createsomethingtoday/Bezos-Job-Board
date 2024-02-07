@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
-import { fetchActiveDepartmentsList, fetchActiveOfficesList } from '../services/greenhouseApi';
+import { fetchActiveDepartmentsList, fetchActiveLocationsForDropdown } from '../services/greenhouseApi';
 import styles from 'app/globals.css';
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [keywordFilters, setKeywordFilters] = useState([]);
   const [departmentFilters, setDepartmentFilters] = useState('');
-  const [officeFilters, setOfficeFilters] = useState('');
+  const [officeFilters, setOfficeFilters] = useState([]);
   const [employmentTypeFilter, setEmploymentTypeFilter] = useState('');
   const [supportTypeFilter, setSupportTypeFilter] = useState('');
   const [departments, setDepartments] = useState([]);
@@ -50,7 +50,7 @@ export default function Home() {
   
     // These fetch calls are independent and should be outside the above `then` block.
     fetchActiveDepartmentsList().then(setDepartments);
-    fetchActiveOfficesList().then(setOffices);
+    fetchActiveLocationsForDropdown().then(setOffices);
   }, []);
   
   const handleFilterChange = (setter) => (value) => {
@@ -71,7 +71,7 @@ export default function Home() {
     const filtered = jobs.filter(job => {
       const keywordMatch = !keywordFilters.length || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
       const departmentMatch = !departmentFilters || job.departments?.some(dept => `${dept.id}` === departmentFilters);
-      const officeMatch = !officeFilters || job.offices?.some(office => `${office.id}` === officeFilters);
+      const officeMatch = !officeFilters.length || job.offices?.some(office => officeFilters.includes(`${office.id}`));
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
       const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
 

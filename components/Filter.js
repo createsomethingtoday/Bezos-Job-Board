@@ -1,5 +1,28 @@
 import React, { useState, useRef } from 'react';
 import styles from '../styles/Filter.module.css';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+const animatedComponents = makeAnimated();
+const customSelectStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
+    boxShadow: state.isFocused ? '0 0 0 1px #1c478c' : provided.boxShadow,
+    '&:hover': {
+      borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? '#f5f5f6' : provided.backgroundColor,
+    color: state.isSelected ? '#1c478c' : provided.color,
+    '&:hover': {
+      backgroundColor: '#f5f5f6',
+      color: '#1c478c',
+    },
+  }),
+  // Add any other custom styles for different parts of the Select component
+};
 
 function Filter({ 
     employmentTypes, 
@@ -12,12 +35,13 @@ function Filter({
     onSupportTypeFilterChange, 
     keywordFilters, 
     departments,
-    offices 
+    offices,
+    officeFilters
 }) {
   const [keywordInput, setKeywordInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [selectedOffice, setSelectedOffice] = useState('');
-  const [selectedEmploymentType, setSelectedEmploymentType] = useState('');
+  const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
   const [selectedSupportType, setSelectedSupportType] = useState('');
 
   // Create refs for each dropdown
@@ -25,8 +49,15 @@ function Filter({
   const officeRef = useRef(null);
   const employmentTypeRef = useRef(null);
   const supportTypeRef = useRef(null);
+  // Assuming employmentTypes is an array of strings like ['Full-time', 'Part-time']
+const employmentTypeOptions = employmentTypes.map(type => ({ value: type, label: type }));
+
 
   const handleKeywordChange = (e) => setKeywordInput(e.target.value);
+  const handleOfficeChange = selectedOptions => {
+    const selectedValues = selectedOptions || [];
+    onOfficeFilterChange(selectedValues.map(option => option.value));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,10 +99,9 @@ function Filter({
         onOfficeFilterChange('');
         if (officeRef.current) officeRef.current.value = '';
         break;
-      case 'employmentType':
-        setSelectedEmploymentType('');
-        onEmploymentTypeFilterChange('');
-        if (employmentTypeRef.current) employmentTypeRef.current.value = '';
+        case 'employmentType':
+        setSelectedEmploymentType(null); // Clear the selection
+        onEmploymentTypeFilterChange(''); // Notify parent component or perform necessary action
         break;
       case 'supportType':
         setSelectedSupportType('');
@@ -96,25 +126,33 @@ function Filter({
           {departments.map(dept => <option key={dept.id} value={dept.id}>{dept.name}</option>)}
         </select>
 
-        <select 
-          value={selectedOffice} 
-          className={styles['c-search-select']} 
-          onChange={createSelectHandler(onOfficeFilterChange, setSelectedOffice)}>
-          <option value="">Select Location</option>
-          {offices.map(office => (
-            <option key={office.id} value={office.id}>{office.name}</option>
-          ))}
-        </select>
+        <Select
+          closeMenuOnSelect={false}
+          components={animatedComponents}
+          isMulti
+          options={offices} // This is your fetched and structured data
+          className={styles['basic-multi-select']}
+          classNamePrefix="select"
+          onChange={selectedOptions => handleOfficeChange(selectedOptions)}
+          styles={customSelectStyles}
+          placeholder="Select Role"
+          value={selectedOffice} // Ensure this is updated to handle an array of selected values
+        />
 
-        <select 
-      value={selectedEmploymentType} 
-      className={styles['c-search-select']} 
-      onChange={createSelectHandler(onEmploymentTypeFilterChange, setSelectedEmploymentType)}>
-      <option value="">Select Employment Type</option>
-      {employmentTypes.map((type, index) => (
-        <option key={index} value={type}>{type}</option>
-      ))}
-    </select>
+        <Select
+          className={styles['basic-multi-select']}
+          value={selectedEmploymentType} // Ensure this is the object or null
+          onChange={option => {
+            setSelectedEmploymentType(option); // option is already in the correct format
+            onEmploymentTypeFilterChange(option ? option.value : '');
+          }}
+          options={employmentTypeOptions}
+          isClearable={true} // Allows clearing the selection
+          placeholder="Select Employment"
+          classNamePrefix="select"
+          styles={customSelectStyles}
+        />
+        
 
     <select 
           value={selectedSupportType} 
@@ -157,12 +195,12 @@ function Filter({
       )}
 
       {/* Include a tag for selectedEmploymentType if it's set */}
-  {selectedEmploymentType && (
-    <span className={styles['filter-tag']}>
-      {selectedEmploymentType}
-      <button onClick={() => removeFilter('employmentType')}>X</button>
-    </span>
-  )}
+      {selectedEmploymentType && (
+        <span className={styles['filter-tag']}>
+          {selectedEmploymentType.label} {/* Use .label to render the string */}
+          <button onClick={() => removeFilter('employmentType')}>X</button>
+        </span>
+      )}
 
   {/* Include a tag for selectedSupportType if it's set */}
   {selectedSupportType && (
