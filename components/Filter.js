@@ -174,7 +174,7 @@ function Filter({
           }}
           options={supportTypeOptions}
           isClearable={true}
-          placeholder="Select Role"
+          placeholder="Select Role Type"
           classNamePrefix="select"
           styles={customSelectStyles}
         />
