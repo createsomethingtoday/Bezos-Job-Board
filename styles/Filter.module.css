@@ -53,9 +53,9 @@
     display: none;
   }
 
-  .basic-multi-select {
+  /* .basic-multi-select {
     display: none;
-  }
+  } */
 }
 
 @media screen and (max-width: 767px) {
