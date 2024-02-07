@@ -42,7 +42,7 @@ function Filter({
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [selectedOffice, setSelectedOffice] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
-  const [selectedSupportType, setSelectedSupportType] = useState('');
+  const [selectedSupportType, setSelectedSupportType] = useState(null);
 
   // Create refs for each dropdown
   const departmentRef = useRef(null);
@@ -50,8 +50,8 @@ function Filter({
   const employmentTypeRef = useRef(null);
   const supportTypeRef = useRef(null);
   // Assuming employmentTypes is an array of strings like ['Full-time', 'Part-time']
-const employmentTypeOptions = employmentTypes.map(type => ({ value: type, label: type }));
-
+  const employmentTypeOptions = employmentTypes.map(type => ({ value: type, label: type }));
+  const supportTypeOptions = supportTypes.map(type => ({ value: type, label: type }));
 
   const handleKeywordChange = (e) => setKeywordInput(e.target.value);
   const handleOfficeChange = selectedOptions => {
@@ -104,7 +104,7 @@ const employmentTypeOptions = employmentTypes.map(type => ({ value: type, label:
         onEmploymentTypeFilterChange(''); // Notify parent component or perform necessary action
         break;
       case 'supportType':
-        setSelectedSupportType('');
+        setSelectedSupportType(null);
         onSupportTypeFilterChange('');
         if (supportTypeRef.current) supportTypeRef.current.value = '';
         break;
@@ -154,15 +154,19 @@ const employmentTypeOptions = employmentTypes.map(type => ({ value: type, label:
         />
         
 
-    <select 
-          value={selectedSupportType} 
-          className={styles['c-search-select']} 
-          onChange={createSelectHandler(onSupportTypeFilterChange, setSelectedSupportType)}>
-          <option value="">Select Role Type</option>
-          {supportTypes.map((type, index) => (
-            <option key={index} value={type}>{type}</option>
-          ))}
-    </select>
+        <Select
+          className={styles['basic-multi-select']}
+          value={selectedSupportType}
+          onChange={(option) => {
+            setSelectedSupportType(option); // option is in the correct format
+            onSupportTypeFilterChange(option ? option.value : '');
+          }}
+          options={supportTypeOptions}
+          isClearable={true}
+          placeholder="Select Role"
+          classNamePrefix="select"
+          styles={customSelectStyles}
+        />
 
         <input className={styles['c-search-input']} type="text" value={keywordInput} onChange={handleKeywordChange} placeholder="Search Keyword" />
         <button className={styles['c-search-submit']} type="submit">Search</button>
@@ -205,7 +209,7 @@ const employmentTypeOptions = employmentTypes.map(type => ({ value: type, label:
   {/* Include a tag for selectedSupportType if it's set */}
   {selectedSupportType && (
         <span className={styles['filter-tag']}>
-          {selectedSupportType}
+          {selectedSupportType.label}
           <button onClick={() => removeFilter('supportType')
 }>X</button>
 </span>
