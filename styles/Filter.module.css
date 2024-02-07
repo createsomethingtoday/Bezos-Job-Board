@@ -10,7 +10,7 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   display: flex;
-  align-items: top; /* Align items for a cleaner look */
+  align-items: center; /* Align items for a cleaner look */
 }
 
 .c-search-input {
@@ -50,6 +50,10 @@
   .c-search-select {
     width: 100%;
     min-height: 40px;
+    display: none;
+  }
+
+  .basic-multi-select {
     display: none;
   }
 }
