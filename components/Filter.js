@@ -52,6 +52,7 @@ function Filter({
   // Assuming employmentTypes is an array of strings like ['Full-time', 'Part-time']
   const employmentTypeOptions = employmentTypes.map(type => ({ value: type, label: type }));
   const supportTypeOptions = supportTypes.map(type => ({ value: type, label: type }));
+  const departmentOptions = departments.map(dept => ({ value: dept.id, label: dept.name }));
 
   const handleKeywordChange = (e) => setKeywordInput(e.target.value);
   const handleOfficeChange = selectedOptions => {
@@ -68,9 +69,11 @@ function Filter({
   };
 
   // Function to safely get department name
-  const getDepartmentName = (deptId) => {
-    const department = departments.find(dept => `${dept.id}` === deptId);
-    return department ? department.name : 'Unknown Department';
+  const getDepartmentNames = (deptIds) => {
+    return deptIds.map(deptId => {
+      const department = departments.find(dept => `${dept.id}` === deptId.value);
+      return department ? department.name : 'Unknown Department';
+    }).join(', ');
   };
 
   // Function to safely get office name
@@ -90,7 +93,7 @@ function Filter({
   const removeFilter = (type) => {
     switch (type) {
       case 'department':
-        setSelectedDepartment('');
+        setSelectedDepartment(null);
         onDepartmentFilterChange('');
         if (departmentRef.current) departmentRef.current.value = '';
         break;
@@ -118,13 +121,19 @@ function Filter({
   return (
     <div className={styles['filter-container']}>
       <form className={styles['c-search-wrapper']} onSubmit={handleSubmit}>
-      <select 
-          value={selectedDepartment} 
-          className={styles['c-search-select']} 
-          onChange={createSelectHandler(onDepartmentFilterChange, setSelectedDepartment)}>
-          <option value="">Select Department</option>
-          {departments.map(dept => <option key={dept.id} value={dept.id}>{dept.name}</option>)}
-        </select>
+      <Select
+        className={styles['basic-multi-select']}
+        value={selectedDepartment}
+        onChange={(option) => {
+          setSelectedDepartment(option); // Update state with selected option
+          onDepartmentFilterChange(option ? option.value : ''); // Call filter function with department ID
+        }}
+        options={departments.map(dept => ({ value: dept.id, label: dept.name }))}
+        isClearable={true}
+        placeholder="Select Department"
+        classNamePrefix="select"
+        styles={customSelectStyles}
+      />
 
         <Select
           closeMenuOnSelect={false}
@@ -182,13 +191,13 @@ function Filter({
             </span>
         ))}
 
-        {/* Tags for each dropdown filter */}
+        {/* Tags for each selected department */}
         {selectedDepartment && (
-          <span className={styles['filter-tag']}>
-            {getDepartmentName(selectedDepartment)}
-            <button onClick={() => removeFilter('department')}>X</button>
-          </span>
-        )}
+        <span className={styles['filter-tag']}>
+          {selectedDepartment.label} {/* Use .label directly from the selectedDepartment object */}
+          <button onClick={() => removeFilter('department')}>X</button>
+        </span>
+      )}
 
        {/* Include a tag for selectedOffice if it's set */}
       {selectedOffice && (
