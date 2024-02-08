@@ -8,7 +8,6 @@ const customSelectStyles = {
     ...provided,
     minHeight: '42px', // Add min-height of 42px
     borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
-    fontSize: '16px',
     '&:hover': {
       borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
     },
@@ -17,7 +16,6 @@ const customSelectStyles = {
     ...provided,
     backgroundColor: state.isFocused ? '#f5f5f6' : provided.backgroundColor,
     color: state.isSelected ? '#1c478c' : provided.color,
-    fontSize: '16px',
     '&:hover': {
       backgroundColor: '#f5f5f6',
       color: '#1c478c',
