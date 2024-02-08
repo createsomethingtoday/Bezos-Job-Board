@@ -170,7 +170,7 @@
 
 .basic-multi-select {
   width: 100%; /* Ensure the select takes the full width of its parent */
-  min-width: 175px; /* Or any specific width you prefer */
+  min-width: 155px; /* Or any specific width you prefer */
   color: #1c478c;
   background-color: #fff;
   flex: 1;
