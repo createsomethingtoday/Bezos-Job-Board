@@ -88,7 +88,7 @@ export default function Home() {
       const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
   
       // Office filter - make sure we are checking against the office id correctly
-      const officeMatch = !selectedOffice || !selectedOffice.length || job.offices.some(office => selectedOffice.map(selected => selected.value).includes(office.id));
+      const officeMatch = !selectedOffice.length || selectedOffice.some(selected => job.offices.some(office => office.id.toString() === selected.value));
 
       console.log(job);
   
