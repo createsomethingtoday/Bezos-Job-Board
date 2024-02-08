@@ -44,5 +44,6 @@
   .c-board-card {
     flex-direction: column;
     display: flex;
+    padding: 20px;
   }
 }

@@ -239,6 +239,7 @@
       align-items: center;
       text-align: center;
       box-shadow: 0 4px 8px 2px rgba(178,178,178,.25);
+      padding: 20px;
     }
 
     .c-board-title-wrapper {
