@@ -6,6 +6,10 @@
   margin-bottom: 20px; /* Space between search and the next elements */
 }
 
+.mobile-filter-button {
+  display: none;
+}
+
 .c-search-wrapper {
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -59,7 +63,22 @@
   color: #333;
 }
 
+/* Filter.module.css */
 
+.reveal-selects-button {
+  display: none; /* Hidden by default */
+  margin: 0 auto; /* Center the button */
+  /* ... other styles for the button ... */
+}
+
+.select-container {
+  flex-grow: 4;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    display: flex;
+    align-items: center;
+  transition: all 0.3s ease-in-out; /* Smooth transition */
+}
 
 /* Adjustments for responsive design can be added in media queries */
 @media screen and (max-width: 991px) {
@@ -81,6 +100,44 @@
     width: 100%;
     min-height: 40px;
     display: none;
+  }
+
+  .reveal-selects-button {
+    display: block; /* Show only on mobile */
+  }
+
+  .select-container {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+  }
+
+  .select-container.show {
+    display: flex; /* Show selects when toggled */
+  }
+
+  .mobile-filter-button {
+    display: block;
+    margin: 20px auto;
+    padding: 0;
+    background-color: transparent;
+    color: #1c478c; /* Subtle blue, commonly used for links */
+    border: none;
+    border-bottom: 1px solid #1c478c; /* Underline effect */
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from text */
+    text-align: center;
+  }
+
+  .select-container {
+    display: none; /* Hide the selects by default on mobile */
+  }
+
+  .select-container.show {
+    display: flex; /* Show the selects when the state is toggled */
   }
 
   /* .basic-multi-select {
@@ -211,3 +268,5 @@ border: 0px;
 cursor:pointer;
 width: 125px;
 }
+
+

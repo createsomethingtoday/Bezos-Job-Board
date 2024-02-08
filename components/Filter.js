@@ -8,6 +8,7 @@ const customSelectStyles = {
     ...provided,
     minHeight: '42px', // Add min-height of 42px
     borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
+    fontSize: '16px',
     '&:hover': {
       borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
     },
@@ -16,6 +17,7 @@ const customSelectStyles = {
     ...provided,
     backgroundColor: state.isFocused ? '#f5f5f6' : provided.backgroundColor,
     color: state.isSelected ? '#1c478c' : provided.color,
+    fontSize: '16px',
     '&:hover': {
       backgroundColor: '#f5f5f6',
       color: '#1c478c',
@@ -43,6 +45,12 @@ function Filter({
   const [selectedOffice, setSelectedOffice] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
   const [selectedSupportType, setSelectedSupportType] = useState(null);
+  // State to control the visibility of the select-container
+  const [showSelects, setShowSelects] = useState(false);
+  // Function to toggle the select-container visibility
+  const toggleSelectVisibility = () => {
+    setShowSelects(!showSelects);
+  };
 
   // Create refs for each dropdown
   const departmentRef = useRef(null);
@@ -166,65 +174,73 @@ function Filter({
 
   return (
     <div className={styles['filter-container']}>
-      <form className={styles['c-search-wrapper']} onSubmit={handleSubmit}>
-      <Select
-        className={styles['basic-multi-select']}
-        value={selectedDepartment}
-        onChange={(option) => {
-          console.log("Selected Department ID: ", option ? option.value : "No selection");
-          setSelectedDepartment(option); // Update state with the selected option object
-          onDepartmentFilterChange(option ? option.value : ''); // Use department ID for filtering
-        }}
-        options={departments.map(dept => ({ value: dept.id, label: dept.name }))}
-        isClearable={true}
-        placeholder="Department"
-        classNamePrefix="select"
-        styles={customSelectStyles}
-      />
-
-        <Select
-          closeMenuOnSelect={false}
-          components={animatedComponents}
-          isMulti
-          options={offices} // This is your fetched and structured data
-          className={styles['basic-multi-select']}
-          classNamePrefix="select"
-          onChange={selectedOptions => handleOfficeChange(selectedOptions)}
-          styles={customSelectStyles}
-          placeholder="Location"
-          value={selectedOffice} // Ensure this is updated to handle an array of selected values
+      <button
+        className={styles['mobile-filter-button']}
+        onClick={toggleSelectVisibility}
+      >
+        Show Filters
+      </button>
+      <form className={styles['c-search-wrapper']} onSubmit={e => e.preventDefault()}>
+        <div className={`${styles['select-container']} ${showSelects ? styles['show'] : ''}`}>
+          <Select
+            className={styles['basic-multi-select']}
+            value={selectedDepartment}
+            onChange={(option) => {
+              setSelectedDepartment(option);
+              onDepartmentFilterChange(option ? option.value : '');
+            }}
+            options={departments.map(dept => ({ value: dept.id, label: dept.name }))}
+            isClearable={true}
+            placeholder="Department"
+            classNamePrefix="select"
+            styles={customSelectStyles}
+          />
+          <Select
+            closeMenuOnSelect={false}
+            components={animatedComponents}
+            isMulti
+            options={offices}
+            className={styles['basic-multi-select']}
+            classNamePrefix="select"
+            onChange={setSelectedOffice}
+            styles={customSelectStyles}
+            placeholder="Location"
+            value={selectedOffice}
+          />
+          <Select
+            className={styles['basic-multi-select']}
+            value={selectedEmploymentType}
+            onChange={(option) => {
+              setSelectedEmploymentType(option);
+              onEmploymentTypeFilterChange(option ? option.value : '');
+            }}
+            options={employmentTypes.map(type => ({ value: type, label: type }))}
+            isClearable={true}
+            placeholder="Employment Type"
+            classNamePrefix="select"
+            styles={customSelectStyles}
+          />
+          <Select
+            className={styles['basic-multi-select']}
+            value={selectedSupportType}
+            onChange={(option) => {
+              setSelectedSupportType(option);
+              onSupportTypeFilterChange(option ? option.value : '');
+            }}
+            options={supportTypes.map(type => ({ value: type, label: type }))}
+            isClearable={true}
+            placeholder="Role Type"
+            classNamePrefix="select"
+            styles={customSelectStyles}
+          />
+        </div>
+        <input
+          className={styles['c-search-input']}
+          type="text"
+          value={keywordInput}
+          onChange={(e) => setKeywordInput(e.target.value)}
+          placeholder="Search Keyword"
         />
-
-        <Select
-          className={styles['basic-multi-select']}
-          value={selectedEmploymentType} // Ensure this is the object or null
-          onChange={option => {
-            setSelectedEmploymentType(option); // option is already in the correct format
-            onEmploymentTypeFilterChange(option ? option.value : '');
-          }}
-          options={employmentTypeOptions}
-          isClearable={true} // Allows clearing the selection
-          placeholder="Employment Type"
-          classNamePrefix="select"
-          styles={customSelectStyles}
-        />
-        
-
-        <Select
-          className={styles['basic-multi-select']}
-          value={selectedSupportType}
-          onChange={(option) => {
-            setSelectedSupportType(option); // option is in the correct format
-            onSupportTypeFilterChange(option ? option.value : '');
-          }}
-          options={supportTypeOptions}
-          isClearable={true}
-          placeholder="Role Type"
-          classNamePrefix="select"
-          styles={customSelectStyles}
-        />
-
-        <input className={styles['c-search-input']} type="text" value={keywordInput} onChange={handleKeywordChange} placeholder="Search Keyword" />
         <button className={styles['c-search-submit']} type="submit">Search</button>
       </form>
 
