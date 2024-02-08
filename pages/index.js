@@ -69,24 +69,28 @@ export default function Home() {
 
   useEffect(() => {
     const filtered = jobs.filter(job => {
+      // Keyword filter
       const keywordMatch = !keywordFilters.length || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
       
-      // Ensure departmentMatch evaluates to true if departmentFilters has not been set
+      // Department filter - corrected to work as intended
       const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
   
+      // Office filter - reverting to original logic that was working
       const officeMatch = !officeFilters.length || job.offices?.some(office => officeFilters.includes(`${office.id}`));
   
-      // Ensure employmentTypeMatch and supportTypeMatch evaluate to true if filters have not been set
+      // Employment type filter - reverting to original logic
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
+  
+      // Support type filter - reverting to original logic
       const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
   
       return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch;
     });
   
-    // Set the filtered jobs to state
-    setFilteredJobs(filtered.length > 0 ? filtered : jobs);
+    setFilteredJobs(filtered);
     postHeightToParent();
   }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
+  
     
   
 
