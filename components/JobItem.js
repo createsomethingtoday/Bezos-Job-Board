@@ -62,7 +62,7 @@ function JobItem({ job }) {
   const jobUrl = `https://bezosacademy.org/open-roles/?gh_jid=${jobId}`;
 
   return (
-    <a href={jobUrl} target="_blank" rel="noopener noreferrer" className={styles['c-board-card']}>
+    <a href={jobUrl} className={styles['c-board-card']}>
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Role</div>
         <div className={styles['c-card-details']}>{formatJobTitle(job.title)}</div>
