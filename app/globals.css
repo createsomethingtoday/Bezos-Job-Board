@@ -45,3 +45,26 @@ body {
 .basic-multi-select:focus-visible {
   outline-color: #1c478c;
 }
+
+/* Select Styling */
+.select__value-container {
+  min-width: fit-content;
+  overflow: scroll;
+}
+
+.select__value-container div {
+  min-width: fit-content;
+}
+
+.select__multi-value__label {
+  min-width: fit-content;
+}
+
+.select__multi-value__label {
+  min-width: fit-content;
+}
+
+.select__control {
+  overflow: scroll;
+  flex-wrap: nowrap !important;
+}
