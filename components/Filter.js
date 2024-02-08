@@ -70,6 +70,16 @@ function Filter({
     setSelectedEmploymentType(null);
     setSelectedSupportType(null);
   
+    // Clear all keyword filters
+    // Assuming onRemoveKeywordFilter can handle an empty array to clear all
+    keywordFilters.forEach(filter => {
+      onRemoveKeywordFilter(filter);
+    });
+    
+    // Reset the keywordFilters if it's part of the component's state
+    // (The following line would only be necessary if keywordFilters is a state variable within this component)
+    // setKeywordFilters([]);
+  
     // Call the prop functions to update the parent component's state
     onKeywordFilterChange('');
     onDepartmentFilterChange('');
@@ -77,7 +87,7 @@ function Filter({
     onEmploymentTypeFilterChange('');
     onSupportTypeFilterChange('');
   
-    // If you have references to the Select components, you can also directly reset them
+    // Directly reset the Select components if needed
     if (departmentRef.current) departmentRef.current.clearValue();
     if (officeRef.current) officeRef.current.clearValue();
     if (employmentTypeRef.current) employmentTypeRef.current.clearValue();
