@@ -37,17 +37,6 @@
   box-shadow: 0 0 0 2px rgba(28,71,140,0.2); /* Subtle shadow on focus */
 }
 
-@media screen and (max-width: 1080px) {
-  .c-search-wrapper {
-    flex-flow: column;
-  }
-
-  .c-search-input {
-    width: 95%;
-    min-height: 40px;
-  }
-}
-
 /* Adjustments for responsive design can be added in media queries */
 @media screen and (max-width: 991px) {
   .c-board-search {
@@ -56,6 +45,8 @@
 
   .c-search-input {
     padding: 0 15px;
+    width: 95%;
+    min-height: 40px;
   }
 
   .c-search-select {
@@ -64,9 +55,9 @@
     display: none;
   }
 
-  /* .basic-multi-select {
-    display: none;
-  } */
+  .c-search-wrapper {
+    flex-flow: column;
+  }
 }
 
 @media screen and (max-width: 767px) {
