@@ -15,21 +15,7 @@ const customSelectStyles = {
   valueContainer: (provided, state) => ({
     ...provided,
     flexWrap: 'nowrap', // Prevent wrapping of tags
-  }),
-  multiValue: (provided, state) => ({
-    ...provided,
-    marginRight: '4px', // Ensure space between tags
-    minWidth: 'auto', // Allow tag to be as wide as its content
-    flex: 'none', // Prevent the tag from shrinking
-  }),
-  multiValueLabel: (provided, state) => ({
-    ...provided,
-    fontSize: '0.9em', // Adjust font size if necessary
-  }),
-  multiValueRemove: (provided, state) => ({
-    ...provided,
-    // If you want to apply custom styles to the remove icon
-  }),
+  })
   // Add other custom parts as needed
 };
 
