@@ -16,3 +16,32 @@ body {
   line-height: 1.5;
   letter-spacing: .1px;
 }
+
+.basic-multi-select {
+  width: 100%; /* Ensure the select takes the full width of its parent */
+  min-width: 155px; /* Or any specific width you prefer */
+  color: #1c478c;
+  background-color: #fff;
+  flex: 1;
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+  appearance: none;
+  line-height: 1.5;
+  letter-spacing: .1px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  min-height: 42px;
+}
+
+.select__control {
+  min-height: 42px !important;
+}
+
+.basic-multi-select:hover {
+  background-color: #f5f5f6;
+}
+
+.basic-multi-select:focus-visible {
+  outline-color: #1c478c;
+}

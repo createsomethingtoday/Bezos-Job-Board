@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
 import { fetchActiveDepartmentsList, fetchActiveLocationsForDropdown } from '../services/greenhouseApi';
-import styles from 'app/globals.css';
+import styles from '../app/globals.css';
+
 
 export default function Home() {
   const [jobs, setJobs] = useState([]);
@@ -19,9 +20,16 @@ export default function Home() {
   const [supportTypes, setSupportTypes] = useState([]);
   // New state for selected dropdown values
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [selectedOffice, setSelectedOffice] = useState(null);
+  const [selectedOffice, setSelectedOffice] = useState([]);
   const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
   const [selectedSupportType, setSelectedSupportType] = useState(null);
+  const handleOfficeFilterChange = (selectedOptions) => {
+    setSelectedOffice(selectedOptions); // This will update the selectedOffice state
+    // Additional logic to filter jobs can go here
+  };
+  
+  
+  
 
   useEffect(() => {
     fetch('/api/greenhouseJobs')
@@ -68,30 +76,38 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // Debugging: Log the selected offices to ensure we're receiving the expected format
+    console.log('Selected offices:', selectedOffice.map(office => `${office.label} (${office.value})`));
+  
     const filtered = jobs.filter(job => {
+      // Debugging: Log each job's offices to verify structure and content
+      console.log(`Job: ${job.title}, Offices:`, job.offices.map(office => `${office.name} (${office.id})`));
+  
       // Keyword filter
       const keywordMatch = !keywordFilters.length || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
-      
-      // Department filter - corrected to work as intended
-      const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
   
-      // Before accessing `selectedOffice.length`, check if `selectedOffice` is truthy (not null or undefined)
-      const officeMatch = !selectedOffice || !selectedOffice.length || selectedOffice.some(selected => job.offices.map(office => office.id).includes(selected.value));
-
-      console.log(`Office match for job: ${job.title}: (job) => !selectedOffice.length || selectedOffice.some((selected) => job.offices.map((office) => office.id).includes(selected.value))`);
+      // Department filter
+      const departmentMatch = !selectedDepartment || job.departments.some(department => department.id === selectedDepartment.value);
   
-      // Employment type filter - reverting to original logic
-      const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
+      // Office filter - Adjusted for potential structure discrepancy
+      const officeMatch = !selectedOffice.length || selectedOffice.some(selected => 
+        job.offices.some(office => office.id.toString() === selected.value));
   
-      // Support type filter - reverting to original logic
-      const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
+      // Employment type filter
+      const employmentTypeMatch = !selectedEmploymentType || job.employmentType === selectedEmploymentType.value;
   
+      // Support type filter
+      const supportTypeMatch = !selectedSupportType || job.supportType === selectedSupportType.value;
+  
+      // Combined filter match check
       return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch;
     });
   
     setFilteredJobs(filtered);
     postHeightToParent();
-  }, [keywordFilters, departmentFilters, selectedOffice, employmentTypeFilter, supportTypeFilter, jobs]);
+    console.log('Filtered jobs count:', filtered.length); // Debugging: Log the count of filtered jobs
+  }, [jobs, keywordFilters, selectedDepartment, selectedOffice, selectedEmploymentType, selectedSupportType]);
+  
   
     
   
@@ -150,15 +166,18 @@ const postHeightToParent = () => {
     setKeywordFilters(prev => prev.filter(keyword => keyword !== keywordToRemove));
   };
 
+
   const handleDropdownFilterChange = (filterType) => (value) => {
+    console.log('Office filter handler triggered');
     switch(filterType) {
       case 'department':
         setDepartmentFilters(value);
         setSelectedDepartment(value);
         break;
-      case 'office':
-        setOfficeFilters(value);
-        setSelectedOffice(value);
+        case 'office':
+      console.log('Previous selectedOffices:', selectedOffices);
+      setSelectedOffices(value);
+      console.log('Updated selectedOffices:', selectedOffices); 
         break;
       case 'employmentType':
         setEmploymentTypeFilter(value);
@@ -205,12 +224,13 @@ const postHeightToParent = () => {
         onKeywordFilterChange={handleKeywordFilter}
         onRemoveKeywordFilter={removeKeywordFilter}
         onDepartmentFilterChange={handleDropdownFilterChange('department')}
-        onOfficeFilterChange={handleDropdownFilterChange('office')}
+        onOfficeFilterChange={handleOfficeFilterChange}
+        selectedOffice={selectedOffice}
+        setSelectedOffice={setSelectedOffice}
         onEmploymentTypeFilterChange={handleDropdownFilterChange('employmentType')}
         onSupportTypeFilterChange={handleDropdownFilterChange('supportType')}
         removeDropdownFilter={removeDropdownFilter}
         selectedDepartment={selectedDepartment}
-        selectedOffice={selectedOffice}
         selectedEmploymentType={selectedEmploymentType}
         selectedSupportType={selectedSupportType}
         keywordFilters={keywordFilters}

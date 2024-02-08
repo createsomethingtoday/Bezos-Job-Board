@@ -24,23 +24,24 @@ const customSelectStyles = {
   // Add any other custom styles for different parts of the Select component
 };
 
-function Filter({ 
-    employmentTypes, 
-    supportTypes, 
-    onKeywordFilterChange, 
-    onRemoveKeywordFilter, 
-    onDepartmentFilterChange, 
-    onOfficeFilterChange, 
-    onEmploymentTypeFilterChange, 
-    onSupportTypeFilterChange, 
-    keywordFilters, 
-    departments,
-    offices,
-    officeFilters
-}) {
+const Filter = ({
+  employmentTypes,
+  supportTypes,
+  onKeywordFilterChange,
+  onRemoveKeywordFilter,
+  onDepartmentFilterChange,
+  onOfficeFilterChange,
+  onEmploymentTypeFilterChange,
+  onSupportTypeFilterChange,
+  removeDropdownFilter,
+  departments,
+  offices,
+  selectedOffice,
+  setSelectedOffice,
+  keywordFilters
+}) => {
   const [keywordInput, setKeywordInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedOffice, setSelectedOffice] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
   const [selectedSupportType, setSelectedSupportType] = useState(null);
   // State to control the visibility of the select-container
@@ -49,6 +50,7 @@ function Filter({
   const toggleSelectVisibility = () => {
     setShowSelects(!showSelects);
   };
+  console.log('Selected offices prop:', selectedOffice);
 
   // Create refs for each dropdown
   const departmentRef = useRef(null);
@@ -63,9 +65,8 @@ function Filter({
   const handleKeywordChange = (e) => setKeywordInput(e.target.value);
   const handleOfficeChange = (selectedOptions) => {
     console.log("Selected offices:", selectedOptions); // Debugging line
-    setSelectedOffice(selectedOptions); // Assuming this is the correct state updater
+    onOfficeFilterChange(selectedOptions); // Call the prop function to update the parent component's state
   };
-  
   
   const clearAllFilters = () => {
     // Reset the local state for all filters
@@ -98,9 +99,6 @@ function Filter({
     if (employmentTypeRef.current) employmentTypeRef.current.clearValue();
     if (supportTypeRef.current) supportTypeRef.current.clearValue();
   };
-  
-  
-  
   
 
   const handleSubmit = (e) => {
@@ -163,8 +161,7 @@ function Filter({
   // Right before the return statement of your Filter component
   const removeOfficeFilter = (officeToRemove) => {
     const updatedOffices = selectedOffice.filter(office => office.value !== officeToRemove.value);
-    console.log("Updated offices after removal:", updatedOffices); // Debugging line
-    setSelectedOffice(updatedOffices);
+    setSelectedOffice(updatedOffices); // This should now work as expected
   };
   
 
@@ -193,18 +190,20 @@ function Filter({
             classNamePrefix="select"
             styles={customSelectStyles}
           />
-          <Select
-            closeMenuOnSelect={false}
-            components={animatedComponents}
-            isMulti
-            options={offices}
-            className={styles['basic-multi-select']}
-            classNamePrefix="select"
-            onChange={setSelectedOffice}
-            styles={customSelectStyles}
-            placeholder="Location"
-            value={selectedOffice}
-          />
+            <Select
+              closeMenuOnSelect={false}
+              components={animatedComponents}
+              isMulti
+              options={offices}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              onChange={(selectedOptions) => onOfficeFilterChange(selectedOptions)}
+              value={selectedOffice}
+              getOptionLabel={(option) => option.label}
+              getOptionValue={(option) => option.value}
+              placeholder="Location"
+              styles={customSelectStyles}
+            />
           <Select
             className={styles['basic-multi-select']}
             value={selectedEmploymentType}
@@ -243,7 +242,7 @@ function Filter({
       </form>
 
       {/* Update the condition to check for any filters being used */}
-      {(keywordFilters.length > 0 || selectedDepartment || selectedOffice.length > 0 || selectedEmploymentType || selectedSupportType) && (
+      {(keywordFilters.length > 0 || selectedDepartment || selectedOffice && selectedOffice.length > 0 || selectedEmploymentType || selectedSupportType) && (
         <div className={styles['filter-tag-wrapper']}>
         {keywordFilters.map((filter, index) => (
             <span key={index} className={styles['filter-tag']} onClick={() => onRemoveKeywordFilter(filter)}>
@@ -261,11 +260,11 @@ function Filter({
       )}
 
        {/* Include a tag for selectedOffice if it's set */}
-       {selectedOffice && selectedOffice.length > 0 && selectedOffice.map((office, index) => (
-        <span key={index} className={styles['filter-tag']} onClick={() => removeOfficeFilter(office)}>
-          {office.label}
-          <button onClick={() => removeOfficeFilter(office)}>X</button>
-        </span>
+        {selectedOffice && selectedOffice.length > 0 && selectedOffice.map((office, index) => (
+          <span key={index} className={styles['filter-tag']} onClick={() => removeOfficeFilter(office)}>
+            {office.label}
+            <button type="button" onClick={() => removeOfficeFilter(office)}>X</button>
+          </span>
       ))}
 
 
@@ -284,8 +283,8 @@ function Filter({
         <span className={styles['filter-tag']} onClick={() => removeFilter('supportType')}>
           {selectedSupportType.label}
           <button onClick={() => removeFilter('supportType')
-}>X</button>
-</span>
+          }>X</button>
+          </span>
 )}
 {/* Add Clear All Filters Button */}
 { (keywordFilters.length > 0 || selectedDepartment || selectedOffice && selectedOffice.length > 0 || selectedEmploymentType || selectedSupportType) && (
