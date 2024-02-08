@@ -178,9 +178,9 @@ function Filter({
         className={styles['mobile-filter-button']}
         onClick={toggleSelectVisibility}
       >
-        Show Filters
+        {showSelects ? 'Hide Filters' : 'Show Filters'}
       </button>
-      <form className={styles['c-search-wrapper']} onSubmit={e => e.preventDefault()}>
+      <form className={styles['c-search-wrapper']} onSubmit={handleSubmit}>
         <div className={`${styles['select-container']} ${showSelects ? styles['show'] : ''}`}>
           <Select
             className={styles['basic-multi-select']}
