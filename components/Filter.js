@@ -14,7 +14,6 @@ const customSelectStyles = {
   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    overflow: 'scroll', // Allow the content to be wider than the container
     flexWrap: 'nowrap', // Prevent wrapping of tags
   }),
   multiValue: (provided, state) => ({
