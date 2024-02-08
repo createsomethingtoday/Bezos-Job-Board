@@ -41,7 +41,7 @@ function Filter({
 }) {
   const [keywordInput, setKeywordInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedOffice, setSelectedOffice] = useState('');
+  const [selectedOffice, setSelectedOffice] = useState(null);
   const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
   const [selectedSupportType, setSelectedSupportType] = useState(null);
 
@@ -57,9 +57,11 @@ function Filter({
 
   const handleKeywordChange = (e) => setKeywordInput(e.target.value);
   const handleOfficeChange = selectedOptions => {
-    const selectedValues = selectedOptions || [];
-    onOfficeFilterChange(selectedValues.map(option => option.value));
+    console.log("Selected offices:", selectedOptions); // Debugging line
+    setSelectedOffice(selectedOptions); // Assuming this is the correct state updater
   };
+  
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -99,7 +101,7 @@ function Filter({
         if (departmentRef.current) departmentRef.current.value = '';
         break;
       case 'office':
-        setSelectedOffice('');
+        setSelectedOffice(null);
         onOfficeFilterChange('');
         if (officeRef.current) officeRef.current.value = '';
         break;
@@ -117,6 +119,14 @@ function Filter({
         break;
     }
   };
+
+  // Right before the return statement of your Filter component
+const removeOfficeFilter = officeToRemove => {
+  const updatedOffices = selectedOffice.filter(office => office.value !== officeToRemove.value);
+  console.log("Updated offices after removal:", updatedOffices); // Debugging line
+  setSelectedOffice(updatedOffices);
+};
+
 
 
   return (
@@ -184,7 +194,7 @@ function Filter({
       </form>
 
       {/* Update the condition to check for any filters being used */}
-      {(keywordFilters.length > 0 || selectedDepartment || selectedOffice || selectedEmploymentType || selectedSupportType) && (
+      {(keywordFilters.length > 0 || selectedDepartment || selectedOffice || selectedEmploymentType || selectedSupportType) && selectedOffice.length > 0 && (
         <div className={styles['filter-tag-wrapper']}>
         {keywordFilters.map((filter, index) => (
             <span key={index} className={styles['filter-tag']}>
@@ -202,12 +212,15 @@ function Filter({
       )}
 
        {/* Include a tag for selectedOffice if it's set */}
-      {selectedOffice && (
-        <span className={styles['filter-tag']}>
-          {getOfficeName(selectedOffice)}
-          <button onClick={() => removeFilter('office')}>X</button>
+       {selectedOffice && selectedOffice.length > 0 && selectedOffice.map((office, index) => (
+        <span key={index} className={styles['filter-tag']}>
+          {office.label}
+          <button onClick={() => removeOfficeFilter(office)}>X</button>
         </span>
-      )}
+      ))}
+
+
+
 
       {/* Include a tag for selectedEmploymentType if it's set */}
       {selectedEmploymentType && (

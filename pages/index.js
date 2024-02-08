@@ -76,7 +76,8 @@ export default function Home() {
       const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
   
       // Office filter - reverting to original logic that was working
-      const officeMatch = !officeFilters.length || job.offices?.some(office => officeFilters.includes(`${office.id}`));
+      const officeMatch = job => !selectedOffice.length || selectedOffice.some(selected => job.offices.map(office => office.name).includes(selected.value));
+      console.log(`Office match for job: ${job.title}: ${officeMatch}`); // Debugging line
   
       // Employment type filter - reverting to original logic
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
