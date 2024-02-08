@@ -17,6 +17,12 @@ body {
   letter-spacing: .1px;
 }
 
+@media screen and (max-width: 991px) {
+  .basic-multi-select {
+    max-width: 100%;
+  }
+}
+
 .basic-multi-select {
   width: 100%; /* Ensure the select takes the full width of its parent */
   min-width: 155px; /* Or any specific width you prefer */
@@ -32,6 +38,7 @@ body {
   text-overflow: ellipsis;
   font-size: 14px;
   min-height: 42px;
+  max-width: 178px;
 }
 
 .select__control {
