@@ -76,38 +76,34 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Debugging: Log the selected offices to ensure we're receiving the expected format
-    console.log('Selected offices:', selectedOffice.map(office => `${office.label} (${office.value})`));
-  
     const filtered = jobs.filter(job => {
-      // Debugging: Log each job's offices to verify structure and content
-      console.log(`Job: ${job.title}, Offices:`, job.offices.map(office => `${office.name} (${office.id})`));
-  
+      // Add logging here 
+      console.log('Selected offices:', selectedOffice);
+      console.log('Job offices:', job.offices);
+      
       // Keyword filter
       const keywordMatch = !keywordFilters.length || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
+      
+      // Department filter - corrected to work as intended
+      const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
   
-      // Department filter
-      const departmentMatch = !selectedDepartment || job.departments.some(department => department.id === selectedDepartment.value);
+      // Office filter - make sure we are checking against the office id correctly
+      const officeMatch = !selectedOffice || !selectedOffice.length || job.offices.some(office => selectedOffice.map(selected => selected.value).includes(office.id));
+
+      console.log(job);
   
-      // Office filter - Adjusted for potential structure discrepancy
-      const officeMatch = !selectedOffice.length || selectedOffice.some(selected => 
-        job.offices.some(office => office.id.toString() === selected.value));
+      // Employment type filter - reverting to original logic
+      const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
   
-      // Employment type filter
-      const employmentTypeMatch = !selectedEmploymentType || job.employmentType === selectedEmploymentType.value;
+      // Support type filter - reverting to original logic
+      const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
   
-      // Support type filter
-      const supportTypeMatch = !selectedSupportType || job.supportType === selectedSupportType.value;
-  
-      // Combined filter match check
       return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch;
     });
   
     setFilteredJobs(filtered);
     postHeightToParent();
-    console.log('Filtered jobs count:', filtered.length); // Debugging: Log the count of filtered jobs
-  }, [jobs, keywordFilters, selectedDepartment, selectedOffice, selectedEmploymentType, selectedSupportType]);
-  
+  }, [keywordFilters, departmentFilters, selectedOffice, employmentTypeFilter, supportTypeFilter, jobs]);
   
     
   
