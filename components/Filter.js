@@ -56,10 +56,12 @@ function Filter({
   const departmentOptions = departments.map(dept => ({ value: dept.id, label: dept.name }));
 
   const handleKeywordChange = (e) => setKeywordInput(e.target.value);
-  const handleOfficeChange = selectedOptions => {
+  const handleOfficeChange = (selectedOptions) => {
     console.log("Selected offices:", selectedOptions); // Debugging line
     setSelectedOffice(selectedOptions); // Assuming this is the correct state updater
   };
+  
+  
   
   
 
@@ -121,11 +123,12 @@ function Filter({
   };
 
   // Right before the return statement of your Filter component
-const removeOfficeFilter = officeToRemove => {
-  const updatedOffices = selectedOffice.filter(office => office.value !== officeToRemove.value);
-  console.log("Updated offices after removal:", updatedOffices); // Debugging line
-  setSelectedOffice(updatedOffices);
-};
+  const removeOfficeFilter = (officeToRemove) => {
+    const updatedOffices = selectedOffice.filter(office => office.value !== officeToRemove.value);
+    console.log("Updated offices after removal:", updatedOffices); // Debugging line
+    setSelectedOffice(updatedOffices);
+  };
+  
 
 
 
@@ -197,7 +200,7 @@ const removeOfficeFilter = officeToRemove => {
       {(keywordFilters.length > 0 || selectedDepartment || selectedOffice.length > 0 || selectedEmploymentType || selectedSupportType) && (
         <div className={styles['filter-tag-wrapper']}>
         {keywordFilters.map((filter, index) => (
-            <span key={index} className={styles['filter-tag']}>
+            <span key={index} className={styles['filter-tag']} onClick={() => onRemoveKeywordFilter(filter)}>
               {filter}
               <button onClick={() => onRemoveKeywordFilter(filter)}>X</button>
             </span>
@@ -205,7 +208,7 @@ const removeOfficeFilter = officeToRemove => {
 
         {/* Tags for each selected department */}
         {selectedDepartment && (
-        <span className={styles['filter-tag']}>
+        <span className={styles['filter-tag']} onClick={() => removeFilter('department')}>
           {selectedDepartment.label} {/* Use .label directly from the selectedDepartment object */}
           <button onClick={() => removeFilter('department')}>X</button>
         </span>
@@ -213,7 +216,7 @@ const removeOfficeFilter = officeToRemove => {
 
        {/* Include a tag for selectedOffice if it's set */}
        {selectedOffice && selectedOffice.length > 0 && selectedOffice.map((office, index) => (
-        <span key={index} className={styles['filter-tag']}>
+        <span key={index} className={styles['filter-tag']} onClick={() => removeOfficeFilter(office)}>
           {office.label}
           <button onClick={() => removeOfficeFilter(office)}>X</button>
         </span>
@@ -224,7 +227,7 @@ const removeOfficeFilter = officeToRemove => {
 
       {/* Include a tag for selectedEmploymentType if it's set */}
       {selectedEmploymentType && (
-        <span className={styles['filter-tag']}>
+        <span className={styles['filter-tag']} onClick={() => removeFilter('employmentType')}>
           {selectedEmploymentType.label} {/* Use .label to render the string */}
           <button onClick={() => removeFilter('employmentType')}>X</button>
         </span>
@@ -232,7 +235,7 @@ const removeOfficeFilter = officeToRemove => {
 
   {/* Include a tag for selectedSupportType if it's set */}
   {selectedSupportType && (
-        <span className={styles['filter-tag']}>
+        <span className={styles['filter-tag']} onClick={() => removeFilter('supportType')}>
           {selectedSupportType.label}
           <button onClick={() => removeFilter('supportType')
 }>X</button>

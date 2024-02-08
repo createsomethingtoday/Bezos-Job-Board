@@ -75,9 +75,10 @@ export default function Home() {
       // Department filter - corrected to work as intended
       const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
   
-      // Office filter - reverting to original logic that was working
-      const officeMatch = job => !selectedOffice.length || selectedOffice.some(selected => job.offices.map(office => office.name).includes(selected.value));
-      console.log(`Office match for job: ${job.title}: ${officeMatch}`); // Debugging line
+      // Before accessing `selectedOffice.length`, check if `selectedOffice` is truthy (not null or undefined)
+      const officeMatch = !selectedOffice || !selectedOffice.length || selectedOffice.some(selected => job.offices.map(office => office.id).includes(selected.value));
+
+      console.log(`Office match for job: ${job.title}: (job) => !selectedOffice.length || selectedOffice.some((selected) => job.offices.map((office) => office.id).includes(selected.value))`);
   
       // Employment type filter - reverting to original logic
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
@@ -90,7 +91,7 @@ export default function Home() {
   
     setFilteredJobs(filtered);
     postHeightToParent();
-  }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
+  }, [keywordFilters, departmentFilters, selectedOffice, employmentTypeFilter, supportTypeFilter, jobs]);
   
     
   

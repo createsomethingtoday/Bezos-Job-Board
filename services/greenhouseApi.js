@@ -74,38 +74,46 @@ export const fetchActiveDepartmentsList = async () => {
  * Fetches active locations and separates the state and city for dropdown usage.
  */
 export const fetchActiveLocationsForDropdown = async () => {
-  const url = 'https://boards-api.greenhouse.io/v1/boards/day1academies/jobs';
+  const url = 'https://boards-api.greenhouse.io/v1/boards/day1academies/offices?render_as=list';
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error('Failed to fetch jobs data');
+      throw new Error('Failed to fetch offices data');
     }
-    const { jobs } = await response.json();
+    const { offices } = await response.json();
 
-    const locationMap = jobs.reduce((acc, job) => {
-      const { name } = job.location || {};
-      if (!name || name === 'Remote') return acc; // Skip if location is 'Remote' or not provided
+    const stateCityMap = offices.reduce((acc, office) => {
+      const { id, location } = office;
+      if (location && location !== 'Remote') {
+        let [_, state, city] = location.split(', ').reverse(); // Assuming format "City, State, Country"
+        city = city || 'Unknown'; // Fallback for cases where city is not parsed correctly
+        state = state || 'Unknown'; // Fallback for cases where state is not parsed correctly
 
-      const [city, state] = name.split(', ');
-      if (!state || !city) return acc; // Skip if state or city is not parsed correctly
-
-      if (!acc[state]) acc[state] = [];
-      if (!acc[state].includes(city)) acc[state].push(city);
-
+        if (!acc[state]) acc[state] = [];
+        if (!acc[state].find(item => item.name === city.trim())) acc[state].push({ name: city.trim(), id });
+      } else if (location === 'Remote') {
+        // Handle 'Remote' as a special case, assigning it directly
+        const state = 'Remote';
+        if (!acc[state]) acc[state] = [];
+        acc[state].push({ name: 'Remote', id: 'Remote' });
+      }
       return acc;
     }, {});
 
-    const formattedData = Object.keys(locationMap).map(state => ({
+    const formattedData = Object.keys(stateCityMap).map(state => ({
       label: state,
-      options: locationMap[state].map(city => ({ value: city, label: city }))
+      options: stateCityMap[state].map(({ name, id }) => ({ value: id.toString(), label: name }))
     }));
 
     return formattedData;
   } catch (error) {
-    console.error('There was an error fetching the job locations:', error);
+    console.error('There was an error fetching the office locations:', error);
     throw error;
   }
 };
+
+
+
 
 export const getDepartments = () => {
   return fetch(`${BASE_URL}/departments`, {
