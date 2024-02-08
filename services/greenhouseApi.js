@@ -86,8 +86,12 @@ export const fetchActiveLocationsForDropdown = async () => {
       const { id, location } = office;
       if (location && location !== 'Remote') {
         let [_, state, city] = location.split(', ').reverse(); // Assuming format "City, State, Country"
-        city = city || 'Unknown'; // Fallback for cases where city is not parsed correctly
-        state = state || 'Unknown'; // Fallback for cases where state is not parsed correctly
+        
+        // Skip adding "Unknown" cities or states
+        if (city === 'Unknown' || state === 'Unknown') return acc;
+
+        city = city || 'Unknown'; // Fallback for cases where city is not parsed correctly, now redundant due to above check
+        state = state || 'Unknown'; // Fallback for cases where state is not parsed correctly, now redundant due to above check
 
         if (!acc[state]) acc[state] = [];
         if (!acc[state].find(item => item.name === city.trim())) acc[state].push({ name: city.trim(), id });
@@ -105,12 +109,14 @@ export const fetchActiveLocationsForDropdown = async () => {
       options: stateCityMap[state].map(({ name, id }) => ({ value: id.toString(), label: name }))
     }));
 
-    return formattedData;
+    // Filter out any "Unknown" labels before returning
+    return formattedData.filter(({ label }) => label !== 'Unknown');
   } catch (error) {
     console.error('There was an error fetching the office locations:', error);
     throw error;
   }
 };
+
 
 
 
