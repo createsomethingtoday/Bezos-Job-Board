@@ -8,7 +8,6 @@ const customSelectStyles = {
     ...provided,
     minHeight: '42px', // Add min-height of 42px
     borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
-    boxShadow: state.isFocused ? '0 0 0 1px #1c478c' : provided.boxShadow,
     '&:hover': {
       borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
     },
