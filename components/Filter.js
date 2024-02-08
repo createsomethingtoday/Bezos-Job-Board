@@ -62,6 +62,29 @@ function Filter({
   };
   
   
+  const clearAllFilters = () => {
+    // Reset the local state for all filters
+    setKeywordInput('');
+    setSelectedDepartment(null);
+    setSelectedOffice([]);
+    setSelectedEmploymentType(null);
+    setSelectedSupportType(null);
+  
+    // Call the prop functions to update the parent component's state
+    onKeywordFilterChange('');
+    onDepartmentFilterChange('');
+    onOfficeFilterChange([]);
+    onEmploymentTypeFilterChange('');
+    onSupportTypeFilterChange('');
+  
+    // If you have references to the Select components, you can also directly reset them
+    if (departmentRef.current) departmentRef.current.clearValue();
+    if (officeRef.current) officeRef.current.clearValue();
+    if (employmentTypeRef.current) employmentTypeRef.current.clearValue();
+    if (supportTypeRef.current) supportTypeRef.current.clearValue();
+  };
+  
+  
   
   
 
@@ -241,6 +264,10 @@ function Filter({
 }>X</button>
 </span>
 )}
+{/* Add Clear All Filters Button */}
+{ (keywordFilters.length > 0 || selectedDepartment || selectedOffice && selectedOffice.length > 0 || selectedEmploymentType || selectedSupportType) && (
+    <button className={styles['clear-all-filters']} onClick={clearAllFilters}>Clear All Filters</button>
+  )}
       </div>
       )}
     </div>

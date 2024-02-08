@@ -37,6 +37,30 @@
   box-shadow: 0 0 0 2px rgba(28,71,140,0.2); /* Subtle shadow on focus */
 }
 
+.clear-all-filters {
+  padding: 5px 10px;
+  background-color: #eff2f5;
+  color: #5a5a5a;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s, color 0.2s;
+
+  /* Align the button to the right side of the filter-tag-wrapper */
+  margin-left: auto;
+}
+
+.clear-all-filters:hover,
+.clear-all-filters:focus {
+  background-color: #e1e4e8;
+  color: #333;
+}
+
+
+
 /* Adjustments for responsive design can be added in media queries */
 @media screen and (max-width: 991px) {
   .c-board-search {
@@ -88,6 +112,8 @@
   background-color: #E4F1F4; /* A light grey background for the tag wrapper */
   border-radius: 6px; /* Slightly rounded corners for the wrapper */
   margin-top: 10px; /* Space above the tag wrapper */
+  align-items: center;
+  justify-content: flex-start; /* Change this to 'space-between' if you want to separate tags and the button */
 }
 
 .filter-tag {
