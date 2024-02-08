@@ -14,13 +14,14 @@ const customSelectStyles = {
   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    overflow: 'visible', // Allow the content to be wider than the container
+    overflow: 'scroll', // Allow the content to be wider than the container
     flexWrap: 'nowrap', // Prevent wrapping of tags
   }),
   multiValue: (provided, state) => ({
     ...provided,
     marginRight: '4px', // Ensure space between tags
     minWidth: 'auto', // Allow tag to be as wide as its content
+    flex: 'none', // Prevent the tag from shrinking
   }),
   multiValueLabel: (provided, state) => ({
     ...provided,
