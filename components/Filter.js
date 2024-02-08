@@ -21,6 +21,19 @@ const customSelectStyles = {
       color: '#1c478c',
     },
   }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    flexWrap: 'nowrap', // Prevents the container from wrapping
+    overflow: 'hidden', // Hides the overflow
+  }),
+  multiValue: (provided, state) => ({
+    ...provided,
+    // Add any specific styles you want for the tags here
+  }),
+  multiValueRemove: (provided, state) => ({
+    ...provided,
+    // Add styles for the remove icon if needed
+  }),
   // Add any other custom styles for different parts of the Select component
 };
 
