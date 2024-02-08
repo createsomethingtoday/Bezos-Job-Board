@@ -41,7 +41,7 @@ function Filter({
 }) {
   const [keywordInput, setKeywordInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedOffice, setSelectedOffice] = useState(null);
+  const [selectedOffice, setSelectedOffice] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
   const [selectedSupportType, setSelectedSupportType] = useState(null);
 
@@ -194,7 +194,7 @@ const removeOfficeFilter = officeToRemove => {
       </form>
 
       {/* Update the condition to check for any filters being used */}
-      {(keywordFilters.length > 0 || selectedDepartment || selectedOffice || selectedEmploymentType || selectedSupportType) && selectedOffice.length > 0 && (
+      {(keywordFilters.length > 0 || selectedDepartment || selectedOffice.length > 0 || selectedEmploymentType || selectedSupportType) && (
         <div className={styles['filter-tag-wrapper']}>
         {keywordFilters.map((filter, index) => (
             <span key={index} className={styles['filter-tag']}>
