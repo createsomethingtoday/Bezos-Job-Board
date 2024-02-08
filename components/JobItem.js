@@ -55,8 +55,14 @@ function JobItem({ job }) {
 
   const employmentType = getEmploymentType();
 
+  // Extracting the job ID from the absolute_url
+  const jobId = job.absolute_url.split('/').pop();
+
+  // Construct the new job URL with the extracted job ID
+  const jobUrl = `https://bezosacademy.org/open-roles/?gh_jid=${jobId}`;
+
   return (
-    <a href={job.absolute_url} target="_blank" rel="noopener noreferrer" className={styles['c-board-card']}>
+    <a href={jobUrl} target="_blank" rel="noopener noreferrer" className={styles['c-board-card']}>
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Role</div>
         <div className={styles['c-card-details']}>{formatJobTitle(job.title)}</div>
