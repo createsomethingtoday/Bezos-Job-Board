@@ -7,7 +7,6 @@ const customSelectStyles = {
   control: (provided, state) => ({
     ...provided,
     minHeight: '42px', // Add min-height of 42px
-    maxWidth: '300px', 
     borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
     '&:hover': {
       borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
@@ -15,15 +14,13 @@ const customSelectStyles = {
   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    display: 'flex', // Use flexbox to allow inline layout of tags
-    flexWrap: 'nowrap', // Keep tags in a single line
-    overflowX: 'auto', // Enable horizontal scrolling
-    padding: '2px 8px', // Adjust padding as needed, make sure it's not too tight
+    overflow: 'visible', // Allow the content to be wider than the container
+    flexWrap: 'nowrap', // Prevent wrapping of tags
   }),
   multiValue: (provided, state) => ({
     ...provided,
-    maxWidth: 'none', // Ensure tags can grow as wide as their content
-    margin: '2px', // Provide some spacing between tags
+    marginRight: '4px', // Ensure space between tags
+    minWidth: 'auto', // Allow tag to be as wide as its content
   }),
   multiValueLabel: (provided, state) => ({
     ...provided,
