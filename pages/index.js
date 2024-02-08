@@ -70,18 +70,25 @@ export default function Home() {
   useEffect(() => {
     const filtered = jobs.filter(job => {
       const keywordMatch = !keywordFilters.length || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
-      const departmentMatch = !departmentFilters || job.departments?.some(dept => `${dept.id}` === departmentFilters);
+      
+      // Ensure departmentMatch evaluates to true if departmentFilters has not been set
+      const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
+  
       const officeMatch = !officeFilters.length || job.offices?.some(office => officeFilters.includes(`${office.id}`));
+  
+      // Ensure employmentTypeMatch and supportTypeMatch evaluate to true if filters have not been set
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
       const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
-
+  
       return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch;
     });
-
-    setFilteredJobs(filtered);
+  
+    // Set the filtered jobs to state
+    setFilteredJobs(filtered.length > 0 ? filtered : jobs);
     postHeightToParent();
   }, [keywordFilters, departmentFilters, officeFilters, employmentTypeFilter, supportTypeFilter, jobs]);
-
+    
+  
 
   const router = useRouter();
   const contentRef = useRef();
