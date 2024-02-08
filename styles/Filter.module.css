@@ -38,9 +38,13 @@
 }
 
 /* Adjustments for responsive design can be added in media queries */
-@media screen and (max-width: 1090px) {
+@media screen and (max-width: 991px) {
   .c-board-search {
     padding: 15px;
+  }
+
+  .c-search-wrapper {
+    flex-flow: column;
   }
 
   .c-search-input {
@@ -55,9 +59,9 @@
     display: none;
   }
 
-  .c-search-wrapper {
-    flex-flow: column;
-  }
+  /* .basic-multi-select {
+    display: none;
+  } */
 }
 
 @media screen and (max-width: 767px) {
