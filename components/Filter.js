@@ -7,35 +7,35 @@ const customSelectStyles = {
   control: (provided, state) => ({
     ...provided,
     minHeight: '42px', // Add min-height of 42px
+    maxWidth: '300px', 
     borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
     '&:hover': {
       borderColor: state.isFocused ? '#1c478c' : provided.borderColor,
     },
   }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isFocused ? '#f5f5f6' : provided.backgroundColor,
-    color: state.isSelected ? '#1c478c' : provided.color,
-    '&:hover': {
-      backgroundColor: '#f5f5f6',
-      color: '#1c478c',
-    },
-  }),
   valueContainer: (provided, state) => ({
     ...provided,
-    flexWrap: 'nowrap', // Prevents the container from wrapping
-    overflow: 'hidden', // Hides the overflow
+    display: 'flex', // Use flexbox to allow inline layout of tags
+    flexWrap: 'nowrap', // Keep tags in a single line
+    overflowX: 'auto', // Enable horizontal scrolling
+    padding: '2px 8px', // Adjust padding as needed, make sure it's not too tight
   }),
   multiValue: (provided, state) => ({
     ...provided,
-    // Add any specific styles you want for the tags here
+    maxWidth: 'none', // Ensure tags can grow as wide as their content
+    margin: '2px', // Provide some spacing between tags
+  }),
+  multiValueLabel: (provided, state) => ({
+    ...provided,
+    fontSize: '0.9em', // Adjust font size if necessary
   }),
   multiValueRemove: (provided, state) => ({
     ...provided,
-    // Add styles for the remove icon if needed
+    // If you want to apply custom styles to the remove icon
   }),
-  // Add any other custom styles for different parts of the Select component
+  // Add other custom parts as needed
 };
+
 
 const Filter = ({
   employmentTypes,
