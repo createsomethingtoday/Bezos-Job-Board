@@ -32,6 +32,7 @@
   font-size: 14px;
   line-height: 1.5;
   letter-spacing: .1px;
+  box-sizing: border-box;
 }
 
 /* Add focus style for input to improve UX */
@@ -92,7 +93,7 @@
 
   .c-search-input {
     padding: 0 15px;
-    width: 95%;
+    width: 100%;
     min-height: 40px;
     font-size: 16px;
   }
@@ -157,7 +158,6 @@
   }
 
   .c-search-input {
-    width: 90%;
     min-height: 40px;
   }
 }
