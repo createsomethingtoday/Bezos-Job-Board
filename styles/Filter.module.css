@@ -33,6 +33,7 @@
   line-height: 1.5;
   letter-spacing: .1px;
   box-sizing: border-box;
+  width: 120px;
 }
 
 /* Add focus style for input to improve UX */
@@ -267,7 +268,7 @@ padding: 0px 30px;
 font-weight: 800;
 border: 0px;
 cursor:pointer;
-width: 125px;
+width: 100px;
 font-size: 14px;
 }
 

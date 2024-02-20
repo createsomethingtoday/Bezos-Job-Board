@@ -232,7 +232,7 @@ const Filter = ({
           type="text"
           value={keywordInput}
           onChange={(e) => setKeywordInput(e.target.value)}
-          placeholder="Search Keyword"
+          placeholder="Search"
         />
         <button className={styles['c-search-submit']} type="submit">Search</button>
       </form>
