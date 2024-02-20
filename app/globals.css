@@ -57,7 +57,8 @@ body {
 /* Select Styling */
 .select__value-container {
   min-width: fit-content;
-  overflow: scroll;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .select__value-container div {
@@ -73,6 +74,7 @@ body {
 }
 
 .select__control {
-  overflow: scroll;
+  overflow: auto;
   flex-wrap: nowrap !important;
+  box-sizing: border-box;
 }

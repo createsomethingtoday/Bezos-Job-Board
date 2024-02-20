@@ -276,7 +276,8 @@ font-size: 14px;
 /* Select Styling */
 .select__value-container {
   min-width: fit-content;
-  overflow: scroll;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .select__value-container div {
