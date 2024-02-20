@@ -57,7 +57,6 @@ body {
 /* Select Styling */
 .select__value-container {
   min-width: fit-content;
-  overflow: scroll;
 }
 
 .select__value-container div {
