@@ -47,7 +47,7 @@ export const fetchJobDetails = async (jobId, includeContent = false) => {
 };
 
 /**
- * Fetches a list of departments from the Greenhouse API.
+ * Fetches a list of departments from the Greenhouse API and excludes "No Department".
  */
 export const fetchActiveDepartmentsList = async () => {
   try {
@@ -57,8 +57,12 @@ export const fetchActiveDepartmentsList = async () => {
     }
     const departmentsData = await response.json();
 
-    // Return all departments without filtering
-    return departmentsData.departments;
+    // Filter out "No Department"
+    const filteredDepartments = departmentsData.departments.filter(department =>
+      department.name.toLowerCase() !== "no department"
+    );
+
+    return filteredDepartments;
 
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
