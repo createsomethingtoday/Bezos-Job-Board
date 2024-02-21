@@ -77,20 +77,25 @@ export default function Home() {
 
   useEffect(() => {
     const filtered = jobs.filter(job => {
-      // Add logging here 
+      // Logging for debugging
       console.log('Selected offices:', selectedOffice);
       console.log('Job offices:', job.offices);
-      
+  
       // Keyword filter
       const keywordMatch = !keywordFilters.length || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
-      
+  
       // Department filter - corrected to work as intended
       const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
   
-      // Office filter - make sure we are checking against the office id correctly
-      const officeMatch = !selectedOffice.length || selectedOffice.some(selected => job.offices.some(office => office.id.toString() === selected.value));
-
-      console.log(job);
+      // Office filter - updated to correctly handle "Remote"
+      const officeMatch = !selectedOffice.length || selectedOffice.some(selected => {
+        if (selected.value === "Remote") {
+          // Assuming jobs marked as remote have a specific attribute or office name/id indicating this
+          return job.remote || job.offices.some(office => office.name === "Remote");
+        } else {
+          return job.offices.some(office => office.id.toString() === selected.value);
+        }
+      });
   
       // Employment type filter - reverting to original logic
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
@@ -104,6 +109,7 @@ export default function Home() {
     setFilteredJobs(filtered);
     postHeightToParent();
   }, [keywordFilters, departmentFilters, selectedOffice, employmentTypeFilter, supportTypeFilter, jobs]);
+  
   
     
   
