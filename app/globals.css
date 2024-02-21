@@ -78,3 +78,8 @@ body {
   flex-wrap: nowrap !important;
   box-sizing: border-box;
 }
+
+.select__menu {
+  max-width: 100%; /* Adjust as needed */
+  white-space: wrap;
+}
