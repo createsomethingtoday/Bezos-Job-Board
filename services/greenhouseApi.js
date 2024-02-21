@@ -104,9 +104,16 @@ export const fetchActiveLocationsForDropdown = async () => {
       return acc;
     }, {});
 
-    const formattedData = Object.keys(stateCityMap).map(state => ({
+    // Sort states alphabetically
+    const sortedStateKeys = Object.keys(stateCityMap).sort();
+
+    const formattedData = sortedStateKeys.map(state => ({
       label: state,
-      options: stateCityMap[state].map(({ name, id }) => ({ value: id.toString(), label: name }))
+      // Sort cities within each state alphabetically
+      options: stateCityMap[state].sort((a, b) => a.name.localeCompare(b.name)).map(({ name, id }) => ({
+        value: id.toString(),
+        label: name
+      }))
     }));
 
     // Filter out any "Unknown" labels before returning
