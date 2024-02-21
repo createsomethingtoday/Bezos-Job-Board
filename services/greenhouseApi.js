@@ -57,18 +57,15 @@ export const fetchActiveDepartmentsList = async () => {
     }
     const departmentsData = await response.json();
 
-    // Filter departments that have active jobs
-    const activeDepartments = departmentsData.departments.filter(department =>
-      department.jobs && department.jobs.length > 0
-    );
-
-    return activeDepartments;
+    // Return all departments without filtering
+    return departmentsData.departments;
 
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
     throw error;
   }
 };
+
 
 /**
  * Fetches active locations and separates the state and city for dropdown usage.
