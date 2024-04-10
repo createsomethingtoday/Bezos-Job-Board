@@ -1,10 +1,10 @@
+// pages/index.js
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
 import { fetchActiveDepartmentsList, fetchActiveLocationsForDropdown } from '../services/greenhouseApi';
 import styles from '../app/globals.css';
-
 
 export default function Home() {
   const [jobs, setJobs] = useState([]);
@@ -18,29 +18,23 @@ export default function Home() {
   const [offices, setOffices] = useState([]);
   const [employmentTypes, setEmploymentTypes] = useState([]);
   const [supportTypes, setSupportTypes] = useState([]);
-  // New state for selected dropdown values
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [selectedOffice, setSelectedOffice] = useState([]);
   const [selectedEmploymentType, setSelectedEmploymentType] = useState(null);
   const [selectedSupportType, setSelectedSupportType] = useState(null);
+
   const handleOfficeFilterChange = (selectedOptions) => {
-    setSelectedOffice(selectedOptions); // This will update the selectedOffice state
-    // Additional logic to filter jobs can go here
+    setSelectedOffice(selectedOptions);
   };
-  
-  
-  
 
   useEffect(() => {
-    fetch('/api/cachedJobs')
+    fetch('/api/greenhouseJobs')
       .then(response => response.json())
       .then(data => {
         setJobs(data);
         setFilteredJobs(data);
-  
         const uniqueTypes = new Set();
         const uniqueSupportTypes = new Set();
-  
         data.forEach(job => {
           if (job.keyed_custom_fields?.employment_type?.value) {
             uniqueTypes.add(job.keyed_custom_fields.employment_type.value);
@@ -50,22 +44,18 @@ export default function Home() {
             uniqueSupportTypes.add(displayType);
           }
         });
-  
         setEmploymentTypes([...uniqueTypes]);
         setSupportTypes([...uniqueSupportTypes]);
       })
       .catch(error => console.error('Error fetching jobs:', error));
-  
-    // These fetch calls are independent and should be outside the above `then` block.
+
     fetchActiveDepartmentsList().then(setDepartments);
     fetchActiveLocationsForDropdown().then(setOffices);
   }, []);
-  
+
   const handleFilterChange = (setter) => (value) => {
     setter(value);
   };
-
-
 
   const getInSchoolDisplay = (teamValue) => {
     switch (teamValue) {
@@ -77,77 +67,51 @@ export default function Home() {
 
   useEffect(() => {
     const filtered = jobs.filter(job => {
-      // Logging for debugging
-      console.log('Selected offices:', selectedOffice);
-      console.log('Job offices:', job.offices);
-  
-      // Keyword filter
       const keywordMatch = !keywordFilters.length || keywordFilters.every(filter => job.title.toLowerCase().includes(filter.toLowerCase()));
-  
-      // Department filter - corrected to work as intended
       const departmentMatch = !departmentFilters || job.departments.some(department => department.id.toString() === departmentFilters.toString());
-  
-      // Office filter - updated to correctly handle "Remote"
       const officeMatch = !selectedOffice.length || selectedOffice.some(selected => {
         if (selected.value === "Remote") {
-          // Assuming jobs marked as remote have a specific attribute or office name/id indicating this
           return job.remote || job.offices.some(office => office.name === "Remote");
         } else {
           return job.offices.some(office => office.id.toString() === selected.value);
         }
       });
-  
-      // Employment type filter - reverting to original logic
       const employmentTypeMatch = !employmentTypeFilter || job.keyed_custom_fields?.employment_type?.value === employmentTypeFilter;
-  
-      // Support type filter - reverting to original logic
       const supportTypeMatch = !supportTypeFilter || getInSchoolDisplay(job.keyed_custom_fields?.team?.value) === supportTypeFilter;
-  
       return keywordMatch && departmentMatch && officeMatch && employmentTypeMatch && supportTypeMatch;
     });
-  
     setFilteredJobs(filtered);
     postHeightToParent();
   }, [keywordFilters, departmentFilters, selectedOffice, employmentTypeFilter, supportTypeFilter, jobs]);
-  
-  
-    
-  
 
   const router = useRouter();
   const contentRef = useRef();
 
-  // Function to post height to the parent window
-const postHeightToParent = () => {
-  if (window.parent && window.document.body) {
-    const height = document.body.scrollHeight;
-    const allowedDomains = [
-      'https://bezosacademy.org/',
-      'https://bezosacademystg.wpengine.com/'
-    ];
-    
-    allowedDomains.forEach(domain => {
-      window.parent.postMessage({ height: height }, domain);
-    });
-  }
-};
+  const postHeightToParent = () => {
+    if (window.parent && window.document.body) {
+      const height = document.body.scrollHeight;
+      const allowedDomains = [
+        'https://bezosacademy.org/',
+        'https://bezosacademystg.wpengine.com/'
+      ];
+      allowedDomains.forEach(domain => {
+        window.parent.postMessage({ height: height }, domain);
+      });
+    }
+  };
 
-  // Post height on route change complete
   useEffect(() => {
     const handleRouteChangeComplete = () => {
       postHeightToParent();
     };
-
     router.events.on('routeChangeComplete', handleRouteChangeComplete);
     return () => {
       router.events.off('routeChangeComplete', handleRouteChangeComplete);
     };
   }, [router.events]);
 
-  // Post height after rendering and periodically check for changes
   useEffect(() => {
     let lastHeight = document.body.scrollHeight;
-  
     const interval = setInterval(() => {
       const currentHeight = document.body.scrollHeight;
       if (currentHeight !== lastHeight) {
@@ -155,10 +119,8 @@ const postHeightToParent = () => {
         lastHeight = currentHeight;
       }
     }, 1000);
-  
     return () => clearInterval(interval);
   }, []);
-  
 
   const handleKeywordFilter = (newKeyword) => {
     setKeywordFilters(prev => newKeyword ? [...prev, newKeyword] : prev);
@@ -168,18 +130,14 @@ const postHeightToParent = () => {
     setKeywordFilters(prev => prev.filter(keyword => keyword !== keywordToRemove));
   };
 
-
   const handleDropdownFilterChange = (filterType) => (value) => {
-    console.log('Office filter handler triggered');
     switch(filterType) {
       case 'department':
         setDepartmentFilters(value);
         setSelectedDepartment(value);
         break;
-        case 'office':
-      console.log('Previous selectedOffices:', selectedOffices);
-      setSelectedOffices(value);
-      console.log('Updated selectedOffices:', selectedOffices); 
+      case 'office':
+        setSelectedOffice(value);
         break;
       case 'employmentType':
         setEmploymentTypeFilter(value);
@@ -216,7 +174,6 @@ const postHeightToParent = () => {
         break;
     }
   };
-
 
   return (
     <div>

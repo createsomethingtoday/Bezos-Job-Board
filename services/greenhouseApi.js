@@ -1,12 +1,21 @@
 // services/greenhouseApi.js
-
 const BASE_URL = 'https://boards-api.greenhouse.io/v1/boards/day1academies';
+const CACHE_EXPIRATION = 60 * 60 * 1000; // Cache for 1 hour (in milliseconds)
 
-/**
- * Fetches a list of jobs from the Greenhouse API.
- * @param {boolean} includeContent - Whether to include full post descriptions, departments, and offices.
- */
+const cache = {
+  jobs: null,
+  jobsTimestamp: null,
+  departments: null,
+  departmentsTimestamp: null,
+  locations: null,
+  locationsTimestamp: null,
+};
+
 export const fetchJobs = async (includeContent = false) => {
+  if (cache.jobs && cache.jobsTimestamp && Date.now() - cache.jobsTimestamp < CACHE_EXPIRATION) {
+    return cache.jobs;
+  }
+
   try {
     const url = includeContent ? `${BASE_URL}/jobs?content=true` : BASE_URL;
     const response = await fetch(url);
@@ -14,10 +23,8 @@ export const fetchJobs = async (includeContent = false) => {
       throw new Error('Network response was not ok');
     }
     const jobsData = await response.json();
-    
-    // Add logging to inspect the response
-    console.log('Jobs data:', jobsData);
-
+    cache.jobs = jobsData.jobs;
+    cache.jobsTimestamp = Date.now();
     return jobsData.jobs;
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
@@ -25,12 +32,6 @@ export const fetchJobs = async (includeContent = false) => {
   }
 };
 
-
-/**
- * Fetches details for a specific job by ID from the Greenhouse API.
- * @param {string} jobId - The ID of the job to fetch details for.
- * @param {boolean} includeContent - Whether to include full post descriptions, departments, and offices.
- */
 export const fetchJobDetails = async (jobId, includeContent = false) => {
   try {
     const url = includeContent ? `${BASE_URL}/jobs/${jobId}?content=true` : `${BASE_URL}/${jobId}`;
@@ -46,47 +47,45 @@ export const fetchJobDetails = async (jobId, includeContent = false) => {
   }
 };
 
-/**
- * Fetches a list of departments from the Greenhouse API and excludes "No Department".
- */
 export const fetchActiveDepartmentsList = async () => {
+  if (cache.departments && cache.departmentsTimestamp && Date.now() - cache.departmentsTimestamp < CACHE_EXPIRATION) {
+    return cache.departments;
+  }
+
   try {
     const response = await fetch(`${BASE_URL}/departments?render_as=list`);
     if (!response.ok) {
       throw new Error(`HTTP Error: ${response.status}`);
     }
     const departmentsData = await response.json();
-
-    // Filter out "No Department"
-    const filteredDepartments = departmentsData.departments.filter(department =>
-      department.name.toLowerCase() !== "no department"
+    const filteredDepartments = departmentsData.departments.filter(
+      department => department.name.toLowerCase() !== "no department"
     );
-
+    cache.departments = filteredDepartments;
+    cache.departmentsTimestamp = Date.now();
     return filteredDepartments;
-
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
     throw error;
   }
 };
 
-
-/**
- * Fetches active locations and separates the state and city for dropdown usage.
- */
 export const fetchActiveLocationsForDropdown = async () => {
-  const url = 'https://boards-api.greenhouse.io/v1/boards/day1academies/offices?render_as=list';
+  if (cache.locations && cache.locationsTimestamp && Date.now() - cache.locationsTimestamp < CACHE_EXPIRATION) {
+    return cache.locations;
+  }
+
   try {
+    const url = 'https://boards-api.greenhouse.io/v1/boards/day1academies/offices?render_as=list';
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error('Failed to fetch offices data');
     }
     const { offices } = await response.json();
-
     const stateCityMap = offices.reduce((acc, office) => {
       const { id, location } = office;
       if (location && location !== 'Remote') {
-        let [_, state, city] = location.split(', ').reverse(); // Assuming format "City, State, Country"
+        let [_, state, city] = location.split(', ').reverse();
         if (city === 'Unknown' || state === 'Unknown') return acc;
         city = city || 'Unknown';
         state = state || 'Unknown';
@@ -100,46 +99,35 @@ export const fetchActiveLocationsForDropdown = async () => {
       return acc;
     }, {});
 
-    // Ensure "Remote" is always an option
     if (!stateCityMap["Remote"]) {
       stateCityMap["Remote"] = [{ name: 'Remote', id: 'Remote' }];
     }
 
-
-    // Sort states alphabetically
     const sortedStateKeys = Object.keys(stateCityMap).sort();
-
     const formattedData = sortedStateKeys.map(state => ({
       label: state,
-      // Sort cities within each state alphabetically
       options: stateCityMap[state].sort((a, b) => a.name.localeCompare(b.name)).map(({ name, id }) => ({
         value: id.toString(),
         label: name
       }))
     }));
 
-    // Adding "Remote" under a "Other Options" or similar label
-const specialOptions = [
-  {
-    label: "Other Options",
-    options: [{ value: "Remote", label: "Remote" }]
-  }
-];
+    const specialOptions = [
+      {
+        label: "Other Options",
+        options: [{ value: "Remote", label: "Remote" }]
+      }
+    ];
 
-// Append "Other Options" to the end of the sorted list
-const finalData = [...formattedData, ...specialOptions];
-
-    // Filter out any "Unknown" labels before returning
-    return finalData.filter(({ label }) => label !== 'Unknown');
+    const finalData = [...formattedData, ...specialOptions];
+    cache.locations = finalData.filter(({ label }) => label !== 'Unknown');
+    cache.locationsTimestamp = Date.now();
+    return cache.locations;
   } catch (error) {
     console.error('There was an error fetching the office locations:', error);
     throw error;
   }
 };
-
-
-
-
 
 export const getDepartments = () => {
   return fetch(`${BASE_URL}/departments`, {

@@ -12,7 +12,9 @@
   "dependencies": {
     "@analytics/google-analytics": "^1.0.7",
     "cors": "^2.8.5",
+    "express-rate-limit": "^7.2.0",
     "next": "14.0.3",
+    "node-cache": "^5.1.2",
     "node-fetch": "^3.3.2",
     "react": "^18",
     "react-dom": "^18",
