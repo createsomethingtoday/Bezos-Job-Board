@@ -137,3 +137,5 @@ export const getDepartments = () => {
   }).then(res => res.json())
     .then(data => data.map(dept => ({ value: dept.id, label: dept.name })));
 };
+
+export { cache };

@@ -1,17 +1,13 @@
 // pages/api/greenhouseJobs.js
-
 import NodeCache from 'node-cache';
-
-const cache = new NodeCache({ stdTTL: 3600 }); // Cache for 1 hour (3600 seconds)
+export const cache = new NodeCache({ stdTTL: 3600 }); // Cache for 1 hour (3600 seconds)
 
 async function fetchHarvestJobDetails(jobId, token) {
   const cacheKey = `job-details-${jobId}`;
   const cachedData = cache.get(cacheKey);
-
   if (cachedData) {
     return cachedData;
   }
-
   const url = `https://harvest.greenhouse.io/v1/jobs/${jobId}`;
   const authValue = `Basic ${token}`;
   const response = await fetch(url, {
@@ -20,11 +16,9 @@ async function fetchHarvestJobDetails(jobId, token) {
       Authorization: authValue
     }
   });
-
   if (!response.ok) {
     throw new Error(`Harvest API error: ${response.status} ${response.statusText}`);
   }
-
   const data = await response.json();
   cache.set(cacheKey, data);
   return data;
@@ -36,7 +30,18 @@ export default async function handler(req, res) {
     const cachedData = cache.get(cacheKey);
 
     if (cachedData) {
-      res.status(200).json(cachedData);
+      // Set caching headers in the response with the no-cache directive
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('ETag', `"${cachedData.timestamp}"`);
+
+      // Check if the request has the If-None-Match header
+      const ifNoneMatch = req.headers['if-none-match'];
+      if (ifNoneMatch === `"${cachedData.timestamp}"`) {
+        res.status(304).end();
+        return;
+      }
+
+      res.status(200).json(cachedData.data);
       return;
     }
 
@@ -52,7 +57,13 @@ export default async function handler(req, res) {
       return { ...job, ...jobDetails };
     }));
 
-    cache.set(cacheKey, jobsWithDetails);
+    const timestamp = Date.now();
+    cache.set(cacheKey, { data: jobsWithDetails, timestamp });
+
+    // Set caching headers in the response with the no-cache directive
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('ETag', `"${timestamp}"`);
+
     res.status(200).json(jobsWithDetails);
   } catch (error) {
     console.error(error);
