@@ -32,7 +32,7 @@ export default function Home() {
   
 
   useEffect(() => {
-    fetch('/api/greenhouseJobs')
+    fetch('/api/cachedJobs')
       .then(response => response.json())
       .then(data => {
         setJobs(data);
