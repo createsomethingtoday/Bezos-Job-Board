@@ -34,8 +34,8 @@ export function FlushCache() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
-      <section className="w-full max-w-2xl p-8 md:p-12 lg:p-16 bg-white rounded-xl">
+    <main className="flex flex-col items-center justify-center min-h-screenpx-4">
+      <section className="w-full max-w-2xl p-8 md:p-12 lg:p-16 rounded-xl">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-4">
           Job Board Cache Flush
         </h1>
