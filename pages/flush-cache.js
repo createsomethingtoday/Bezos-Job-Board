@@ -8,6 +8,11 @@ const FlushCachePage = () => {
       <Head>
         <title>Flush Cache</title>
         <meta name="description" content="Flush the cache of the job board" />
+        <style>{`
+          body {
+            background-color: transparent !important;
+          }
+        `}</style>
       </Head>
       <FlushCache />
     </div>
