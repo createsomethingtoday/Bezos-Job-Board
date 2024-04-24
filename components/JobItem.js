@@ -63,8 +63,8 @@ function JobItem({ job }) {
 
   const handleButtonClick = () => {
     const grnhseApp = document.getElementById('grnhse_app');
-    if (grnhseApp) {
-      grnhseApp.style.display = 'block';
+    if (grnhseApp && grnhseApp.contentWindow) {
+      grnhseApp.contentWindow.postMessage('showIframe', 'https://bezosacademy-jobboard.vercel.app');
     }
   };
 
