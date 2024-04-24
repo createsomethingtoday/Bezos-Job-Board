@@ -19,12 +19,6 @@ const App = ({ Component, pageProps }) => {
     // and log those page views
     router.events.on('routeChangeComplete', handleRouteChange);
 
-    // Hide the #grnhse_app iframe on page load
-    const grnhseApp = document.getElementById('grnhse_app');
-    if (grnhseApp) {
-      grnhseApp.style.display = 'none';
-    }
-
     // If the component is unmounted, unsubscribe
     // from the event with the `off` method
     return () => {

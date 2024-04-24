@@ -3,8 +3,8 @@ import styles from '../styles/JobItem.module.css';
 
 function JobItem({ job }) {
 
-  const departments = job.departments
-    ? job.departments.map(dept => dept.name).join(', ')
+  const departments = job.departments 
+    ? job.departments.map(dept => dept.name).join(', ') 
     : 'N/A';
 
   const formatLocation = (location) => {
@@ -12,8 +12,8 @@ function JobItem({ job }) {
     return parts.length > 1 ? `${parts[0]}, ${parts[1]}` : location;
   };
 
-  const offices = job.offices
-    ? job.offices.map(office => office.name).join(', ')
+  const offices = job.offices 
+    ? job.offices.map(office => office.name).join(', ') 
     : 'N/A';
 
   // Function to determine the display text for 'In School' based on the team value
@@ -29,9 +29,9 @@ function JobItem({ job }) {
   };
 
   // Extracting the team value from keyed_custom_fields
-  const teamValue = job.keyed_custom_fields && job.keyed_custom_fields.team
-    ? job.keyed_custom_fields.team.value
-    : 'N/A';
+  const teamValue = job.keyed_custom_fields && job.keyed_custom_fields.team 
+                     ? job.keyed_custom_fields.team.value 
+                     : 'N/A';
   const inSchoolDisplay = getInSchoolDisplay(teamValue);
 
   const formatDate = (dateStr) => {
@@ -49,8 +49,8 @@ function JobItem({ job }) {
   // Function to get employment type
   const getEmploymentType = () => {
     return job.keyed_custom_fields && job.keyed_custom_fields.employment_type
-      ? job.keyed_custom_fields.employment_type.value
-      : 'N/A';
+           ? job.keyed_custom_fields.employment_type.value
+           : 'N/A';
   };
 
   const employmentType = getEmploymentType();
@@ -59,14 +59,7 @@ function JobItem({ job }) {
   const jobId = job.absolute_url.split('/').pop();
 
   // Construct the new job URL with the extracted job ID
-  const jobUrl = `https://bezosacademy.org/open-roles/?gh_jid=${jobId}`;
-
-  const handleButtonClick = () => {
-    const grnhseApp = document.getElementById('grnhse_app');
-    if (grnhseApp && grnhseApp.contentWindow) {
-      grnhseApp.contentWindow.postMessage('showIframe', 'https://bezosacademy-jobboard.vercel.app');
-    }
-  };
+  const jobUrl = `https://bezosacademy.org/open-roles-details/?gh_jid=${jobId}`;
 
   return (
     <a href={jobUrl} target="_top" rel="noopener noreferrer" className={styles['c-board-card']}>
@@ -79,7 +72,7 @@ function JobItem({ job }) {
         <div className={styles['c-card-label']}>Employment Type</div>
         <div className={styles['c-card-details']}>{employmentType}</div>
       </div>
-
+      
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Role Type</div>
         <div className={styles['c-card-details']}>{inSchoolDisplay}</div>
@@ -87,17 +80,17 @@ function JobItem({ job }) {
 
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Department</div>
-        <div className={styles['c-card-details']}>{departments}</div>
+        <div className={styles['c-card-details']}>{departments}</div>  
       </div>
 
       <div className={styles['c-card-content-wrapper']}>
         <div className={styles['c-card-label']}>Location</div>
-        <div className={styles['c-card-details']}>{formatLocation(job.location.name)}</div>
+        <div className={styles['c-card-details']}>{formatLocation(job.location.name)}</div>  
       </div>
 
       <div className={`${styles['c-card-content-wrapper']} ${styles['button-grid-wrapper']}`}>
-        <div className={styles['c-card-button']} onClick={handleButtonClick}>
-          View Job
+        <div className={styles['c-card-button']}>
+          View Job  
         </div>
       </div>
     </a>
