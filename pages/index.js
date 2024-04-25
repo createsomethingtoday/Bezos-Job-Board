@@ -4,7 +4,8 @@ import { useRouter } from 'next/router';
 import JobList from '../components/JobList';
 import Filter from '../components/Filter';
 import { fetchActiveDepartmentsList, fetchActiveLocationsForDropdown } from '../services/greenhouseApi';
-import styles from '../app/globals.css';
+import globalStyles from '../app/globals.css';
+import styles from './index.module.css';
 
 export default function Home() {
   const [jobs, setJobs] = useState([]);
