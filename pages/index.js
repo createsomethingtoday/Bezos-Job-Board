@@ -196,7 +196,7 @@ export default function Home() {
         departments={departments}
         offices={offices}
       />
-      <p><span>{filteredJobs.length}</span> of <span>{jobs.length}</span> jobs</p>
+      <p className={styles['filter__count-wrapper']}><span>{filteredJobs.length}</span> of <span>{jobs.length}</span> jobs</p>
       <JobList jobs={filteredJobs} />
     </div>
   );

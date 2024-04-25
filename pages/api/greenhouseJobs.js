@@ -1,6 +1,6 @@
 // pages/api/greenhouseJobs.js
 import NodeCache from 'node-cache';
-export const cache = new NodeCache({ stdTTL: 3600 }); // Cache for 1 hour (3600 seconds)
+export const cache = new NodeCache({ stdTTL: 1800 }); // Cache for 30 minutes (1800 seconds)
 
 async function fetchHarvestJobDetails(jobId, token) {
   const cacheKey = `job-details-${jobId}`;

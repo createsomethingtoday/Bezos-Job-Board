@@ -1,7 +1,6 @@
 // services/greenhouseApi.js
 const BASE_URL = 'https://boards-api.greenhouse.io/v1/boards/day1academies';
-const CACHE_EXPIRATION = 60 * 60 * 1000; // Cache for 1 hour (in milliseconds)
-
+const CACHE_EXPIRATION = 30 * 60 * 1000; // Cache for 30 minutes (in milliseconds)
 const cache = {
   jobs: null,
   jobsTimestamp: null,
