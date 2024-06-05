@@ -58,10 +58,13 @@ export default async function handler(req, res) {
     console.log('Board Data:', boardData);
 
     const token = process.env.GREENHOUSE_HARVEST_API_KEY;
-    const jobsWithDetails = await Promise.all(boardData.jobs.map(async (job) => {
-      const jobDetails = await fetchHarvestJobDetails(job.internal_job_id, token);
-      return jobDetails ? { ...job, ...jobDetails } : job;
-    }));
+    const jobsWithDetails = await Promise.all(boardData.jobs
+      .filter(job => job.title !== "Join Our Talent Community") // Exclude jobs with the role name "Join Our Talent Community"
+      .map(async (job) => {
+        const jobDetails = await fetchHarvestJobDetails(job.internal_job_id, token);
+        return jobDetails ? { ...job, ...jobDetails } : job;
+      })
+    );
 
     const timestamp = Date.now();
     cache.set(cacheKey, { data: jobsWithDetails, timestamp });
