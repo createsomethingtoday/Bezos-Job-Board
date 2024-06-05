@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import * as ga from '../services/ga';
+import { Analytics } from '@vercel/analytics/react';
 import '../styles/global.css';
 
 const App = ({ Component, pageProps }) => {
@@ -26,7 +27,12 @@ const App = ({ Component, pageProps }) => {
     };
   }, [router.events]);
 
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Component {...pageProps} />
+      <Analytics />
+    </>
+  );
 };
 
 export default App;
