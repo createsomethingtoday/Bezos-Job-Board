@@ -16,6 +16,10 @@ async function fetchHarvestJobDetails(jobId, token) {
       Authorization: authValue
     }
   });
+  if (response.status === 404) {
+    console.warn(`Job ID ${jobId} not found.`);
+    return null; // or handle as needed
+  }
   if (!response.ok) {
     throw new Error(`Harvest API error: ${response.status} ${response.statusText}`);
   }
@@ -30,11 +34,9 @@ export default async function handler(req, res) {
     const cachedData = cache.get(cacheKey);
 
     if (cachedData) {
-      // Set caching headers in the response with the no-cache directive
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('ETag', `"${cachedData.timestamp}"`);
 
-      // Check if the request has the If-None-Match header
       const ifNoneMatch = req.headers['if-none-match'];
       if (ifNoneMatch === `"${cachedData.timestamp}"`) {
         res.status(304).end();
@@ -51,16 +53,19 @@ export default async function handler(req, res) {
       }
     });
     const boardData = await boardResponse.json();
+
+    // Log the boardData to inspect its structure
+    console.log('Board Data:', boardData);
+
     const token = process.env.GREENHOUSE_HARVEST_API_KEY;
     const jobsWithDetails = await Promise.all(boardData.jobs.map(async (job) => {
       const jobDetails = await fetchHarvestJobDetails(job.internal_job_id, token);
-      return { ...job, ...jobDetails };
+      return jobDetails ? { ...job, ...jobDetails } : job;
     }));
 
     const timestamp = Date.now();
     cache.set(cacheKey, { data: jobsWithDetails, timestamp });
 
-    // Set caching headers in the response with the no-cache directive
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('ETag', `"${timestamp}"`);
 
