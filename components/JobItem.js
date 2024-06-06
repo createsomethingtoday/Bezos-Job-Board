@@ -1,4 +1,5 @@
 import React from 'react';
+import { track } from '@vercel/analytics';
 import styles from '../styles/JobItem.module.css';
 
 function JobItem({ job }) {
@@ -61,6 +62,10 @@ function JobItem({ job }) {
   // Construct the new job URL with the extracted job ID
   const jobUrl = `https://bezosacademy.org/open-roles-details/?gh_jid=${jobId}`;
 
+  const handleViewJobClick = () => {
+    track('View Job', { jobId, jobName: job.title });
+  };
+
   return (
     <a href={jobUrl} target="_top" rel="noopener noreferrer" className={styles['c-board-card']}>
       <div className={styles['c-card-content-wrapper']}>
@@ -89,7 +94,7 @@ function JobItem({ job }) {
       </div>
 
       <div className={`${styles['c-card-content-wrapper']} ${styles['button-grid-wrapper']}`}>
-        <div className={styles['c-card-button']}>
+        <div className={styles['c-card-button']} onClick={handleViewJobClick}>
           View Job  
         </div>
       </div>
